@@ -36,4 +36,7 @@ def create_app(test_config=None):
         from .home import home
         app.register_blueprint(home.home_blueprint)
 
+        from .tracks import tracks
+        app.register_blueprint(tracks.tracks_blueprint)
+
     return app

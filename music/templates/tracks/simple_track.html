@@ -5,9 +5,13 @@
     <title>Simple Track</title>
 </head>
 <body>
+    {% for track in tracks %}
+
     <h1>CompSci 235 2022 - MY MUSIC LIBRARY</h1>
     <h2>{{ track.title }}</h2>
     <p>Track Duration: <b>{{ track.track_duration }}</b></p>
     <p>Track URL: {{ track.track_url }}</p>
+
+    {% endfor %}
 </body>
 </html>
