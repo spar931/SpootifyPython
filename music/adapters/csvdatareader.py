@@ -6,6 +6,8 @@ from music.domainmodel.artist import Artist
 from music.domainmodel.album import Album
 from music.domainmodel.track import Track
 from music.domainmodel.genre import Genre
+from music.domainmodel.user import User
+from music.domainmodel.review import Review
 
 
 def create_track_object(track_row):
@@ -166,3 +168,5 @@ class TrackCSVReader:
             self.__dataset_of_tracks.append(track)
 
         return self.__dataset_of_tracks
+
+

@@ -26,6 +26,8 @@
 
   <body>
     <div id="body">
+      <!-- Include navigation partial. -->
+      {% include 'navigation.html' %}
 
       <div id="content-2">
         <!-- Include header partial. -->
@@ -35,6 +37,8 @@
           <!-- Main content block to be supplied by page. -->
           {% block content %} {% endblock %}
 
+          <!-- Include sidebar partial. -->
+          {% include 'sidebar.html' %}
         </div>
 
       </div>

@@ -1,0 +1,14 @@
+<nav id="nav">
+  <img id="logo" src="{{ url_for('static', filename='Groove.png') }}" />
+
+  <h2 id="nav-header">
+    {% if 'user_name' in session %} Hello, {{ session['user_name'] }} {%
+    endif %}
+  </h2>
+  <a class="btn-nav" href="{{ url_for('home_bp.home') }}">Home</a>
+
+
+  <div id="nav-footer">
+    COMPSCI 235 Software Development Methodologies
+  </div>
+</nav>
