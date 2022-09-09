@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Simple Track</title>
-</head>
-<body>
-    {% for track in tracks %}
-
-    <h1>CompSci 235 2022 - MY MUSIC LIBRARY</h1>
-    <h2>{{ track.title }}</h2>
-    <p>Track Duration: <b>{{ track.track_duration }}</b></p>
-    <p>Track URL: {{ track.track_url }}</p>
-
+{% extends 'layout.html' %} {% block content %}
+<main id="main">
+    {% for key,value in tracks.items() %}
+    <h1><strong>{{ key }}</strong></h1>
+        {% for track in value %}
+        <h4><a href="{{ url_for('tracks_bp.display_track_info', track_id = track.track_id) }}">{{ track.title }}</a></h4>
+        {% endfor %}
     {% endfor %}
-</body>
-</html>
+</main>
+{% endblock %}

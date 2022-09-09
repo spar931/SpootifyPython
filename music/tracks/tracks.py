@@ -23,3 +23,15 @@ tracks_blueprint = Blueprint(
 def browse_tracks():
     tracks = services.get_tracks(repo.repo_instance)
     return render_template('tracks/simple_track.html', tracks=tracks)
+
+
+@tracks_blueprint.route('/browse_tracks_alphabetical', methods=['GET'])
+def browse_tracks_alphabetical_order():
+    tracks_alphabet_dict = services.get_track_titles_by_alphabetical_order(repo.repo_instance)
+    return render_template('tracks/simple_track.html', tracks=tracks_alphabet_dict)
+
+
+@tracks_blueprint.route('/display_track_info/<track_id>', methods=['GET'])
+def display_track_info(track_id):
+    chosen_track = services.get_track_by_id(repo.repo_instance, track_id)
+    return render_template('tracks/info.html', track=chosen_track)

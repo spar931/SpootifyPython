@@ -33,6 +33,14 @@ class MemoryRepository(AbstractRepository):
     def get_number_of_tracks(self) -> int:
         return len(self.__data.dataset_of_tracks)
 
+    def get_track_by_id(self, track_id):
+        chosen_track = None
+        for track in self.__data.dataset_of_tracks:
+            if int(track_id) == track.track_id:
+                chosen_track = track
+                return chosen_track
+        return chosen_track
+
     def add_review(self, review: Review):
         # call parent class first, add_review relies on implementation of code common to all derived classes
         super().add_review(review)
