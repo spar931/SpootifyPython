@@ -2,9 +2,11 @@
 <main id="main">
     {% for key,value in tracks.items() %}
     <h1><strong>{{ key }}</strong></h1>
-        {% for track in value %}
-        <h4><a href="{{ url_for('tracks_bp.display_track_info', track_id = track.track_id) }}">{{ track.title }}</a></h4>
-        {% endfor %}
+        <div id="link_bar">
+            {% for track in value %}
+                <h4><a href="{{ url_for('tracks_bp.display_track_info', track_id = track.track_id) }}">{{ track.title }}</a></h4>
+            {% endfor %}
+        </div>
     {% endfor %}
 </main>
 {% endblock %}
