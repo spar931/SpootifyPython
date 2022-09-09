@@ -1,22 +1,9 @@
-from typing import List
-
 import string
-
-from music.domainmodel.artist import Artist
-from music.domainmodel.album import Album
-from music.domainmodel.track import Track
-from music.domainmodel.genre import Genre
-from music.domainmodel.user import User
-from music.domainmodel.review import Review
 
 from music.adapters.repository import AbstractRepository
 
 
-def get_tracks(repo: AbstractRepository):
-    return repo.get_tracks()
-
-
-def get_track_titles_by_alphabetical_order(repo: AbstractRepository):
+def get_tracks_by_alphabetical_order(repo: AbstractRepository):
 
     alphabet_dict = {k: [] for k in string.ascii_uppercase}
     alphabet_dict['Other'] = []
@@ -32,3 +19,8 @@ def get_track_titles_by_alphabetical_order(repo: AbstractRepository):
 
 def get_track_by_id(repo: AbstractRepository, track_id):
     return repo.get_track_by_id(track_id)
+
+
+
+
+

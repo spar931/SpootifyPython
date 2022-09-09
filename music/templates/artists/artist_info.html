@@ -1,0 +1,10 @@
+{% extends 'layout.html' %} {% block content %}
+<main id="main">
+    <h2>{{ artist.full_name }}'s music</h2>
+        {% for track in tracks %}
+            <ul>
+                <li><a href="{{ url_for('tracks_bp.display_track_info', track_id = track.track_id) }}">{{ track.title }}</a></li>
+            </ul>
+        {% endfor %}
+</main>
+{% endblock %}

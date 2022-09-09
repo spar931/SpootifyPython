@@ -39,4 +39,10 @@ def create_app(test_config=None):
         from .tracks import tracks
         app.register_blueprint(tracks.tracks_blueprint)
 
+        from .artists import artists
+        app.register_blueprint(artists.artists_blueprint)
+
+        from .albums import albums
+        app.register_blueprint(albums.albums_blueprint)
+
     return app
