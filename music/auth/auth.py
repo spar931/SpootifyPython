@@ -9,8 +9,8 @@ from functools import wraps
 import music.auth.services as services
 import music.adapters.repository as repo
 
-
 auth = Blueprint('auth', __name__, url_prefix='authentication')
+
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -38,16 +38,18 @@ def login():
         except services.AuthenticationException:
             # Authentication failed, set a suitable error message.
             password_does_not_match_user_name = 'Password does not match supplied user name - please check and try again'
-    return render_template( 'authentication/credentials.html',
-        title='Login',
-        user_name_error_message=user_name_not_recognised,
-        password_error_message=password_does_not_match_user_name,
-        form=form)
+    return render_template('authentication/credentials.html',
+                           title='Login',
+                           user_name_error_message=user_name_not_recognised,
+                           password_error_message=password_does_not_match_user_name,
+                           form=form)
+
 
 @auth.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('home_bp.home'))
+
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -72,13 +74,13 @@ def register():
         handler_url=url_for('auth.register'))
 
 
-
 def login_required(view):
     @wraps(view)
     def wrapped_view(**kwargs):
         if 'user_name' not in session:
             return redirect(url_for('auth.login'))
         return view(**kwargs)
+
     return wrapped_view
 
 

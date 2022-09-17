@@ -1,13 +1,13 @@
 import string
 
-from music.adapters.repository import AbstractRepository
-
 from music.domainmodel.artist import Artist
 from music.domainmodel.album import Album
 from music.domainmodel.track import Track
 from music.domainmodel.genre import Genre
 from music.domainmodel.user import User
 from music.domainmodel.review import Review
+
+from music.adapters.repository import AbstractRepository
 
 
 class NonExistentArticleException(Exception):
@@ -36,20 +36,3 @@ def get_track_by_id(repo: AbstractRepository, track_id):
     return repo.get_track_by_id(track_id)
 
 
-def add_review(track_id: int, rating: int, review_text: str, user_name: str, repo: AbstractRepository):
-    # Check that the track exists.
-    track = repo.get_track_by_id(track_id)
-    if track is None:
-        raise NonExistentArticleException
-
-    user = repo.get_user(user_name)
-    if user is None:
-        raise UnknownUserException
-
-    # Create review.
-    review = Review(track, review_text, rating)
-    user.add_review(review)
-    track.add_review(review)
-
-    # Update the repository.
-    repo.add_review(review)

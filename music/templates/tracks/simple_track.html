@@ -1,12 +1,14 @@
 {% extends 'layout.html' %} {% block content %}
 <main id="main">
     {% for key,value in tracks.items() %}
-    <h1>{{ key }}</h1>
-        <div id="link_bar">
-            {% for track in value %}
-                <h4><a href="{{ url_for('tracks_bp.display_track_info', track_id = track.track_id) }}">{{ track.title }}</a></h4>
-            {% endfor %}
-        </div>
-    {% endfor %}
+        <h1><strong>{{ key }}</strong></h1>
+            <div id="link_bar">
+                <ul>
+                    {% for track in value %}
+                        <li><a href="{{ url_for('tracks_bp.display_track_info', track_id = track.track_id) }}">{{ track.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
 </main>
 {% endblock %}

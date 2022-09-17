@@ -1,6 +1,5 @@
 {% extends 'layout.html' %} {% block content %}
 <main id="main">
-
     <h2>{{ track.title }}</h2>
         <p>Track Artist: {{ track.artist.full_name }}</p>
         <p>Track Album: {{ track.album.title }}</p>
@@ -9,6 +8,5 @@
         <div id="link_bar">
             <p>Track URL: <a href = "{{ track.track_url }}">{{ track.track_url }}</a></p>
         </div>
-
 </main>
 {% endblock %}

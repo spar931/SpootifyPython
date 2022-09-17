@@ -1,14 +1,14 @@
 {% extends 'layout.html' %} {% block content %}
 <main id="main">
     {% for key,value in artists.items() %}
-    <h1><strong>{{ key }}</strong></h1>
-        <div id="link_bar">
-            <ul>
-                {% for artist in value %}
-                    <li><a href="{{ url_for('artists_bp.display_artist_info', artist_id = artist.artist_id) }}">{{ artist.full_name }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
+        <h1><strong>{{ key }}</strong></h1>
+            <div id="link_bar">
+                <ul>
+                    {% for artist in value %}
+                        <li><a href="{{ url_for('artists_bp.display_artist_info', artist_id = artist.artist_id) }}">{{ artist.full_name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
     {% endfor %}
 </main>
 {% endblock %}

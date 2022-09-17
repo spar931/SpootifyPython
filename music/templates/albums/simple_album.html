@@ -1,14 +1,14 @@
 {% extends 'layout.html' %} {% block content %}
 <main id="main">
     {% for key,value in albums.items() %}
-    <h1><strong>{{ key }}</strong></h1>
-        <div id="link_bar">
-            <ul>
-                {% for album in value %}
-                    <li><a href="{{ url_for('albums_bp.display_album_info', album_id = album.album_id) }}">{{ album.title }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
+        <h1><strong>{{ key }}</strong></h1>
+            <div id="link_bar">
+                <ul>
+                    {% for album in value %}
+                        <li><a href="{{ url_for('albums_bp.display_album_info', album_id = album.album_id) }}">{{ album.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
     {% endfor %}
 </main>
 {% endblock %}

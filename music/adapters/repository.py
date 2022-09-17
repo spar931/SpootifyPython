@@ -1,12 +1,9 @@
 import abc
-from typing import List
 
-from music.domainmodel.artist import Artist
-from music.domainmodel.album import Album
-from music.domainmodel.track import Track
-from music.domainmodel.genre import Genre
-from music.domainmodel.user import User
 from music.domainmodel.review import Review
+from music.domainmodel.user import User
+from music.domainmodel.track import Track
+
 
 repo_instance = None
 
@@ -76,7 +73,7 @@ class AbstractRepository(abc.ABC):
         If the Review doesn't have bidirectional links with a track, this method raises a
         RepositoryException and doesn't update the repository.
         """
-        if review.Track is None or review not in review.Track.reviews:
+        if review.track is None:
             raise RepositoryException('review not correctly attached to a track')
 
     @abc.abstractmethod
