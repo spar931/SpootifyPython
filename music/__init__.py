@@ -19,6 +19,8 @@ def create_app(test_config=None):
     app.config.from_object('config.Config')
     data_path = Path('music') / 'adapters' / 'data'
 
+    app.config['SECRET_KEY'] = 'qwerty'
+
     if test_config is not None:
         # Load test configuration, and override any configuration settings.
         app.config.from_mapping(test_config)
@@ -35,5 +37,8 @@ def create_app(test_config=None):
         # Register blueprints.
         from .home import home
         app.register_blueprint(home.home_blueprint)
+        from .auth import auth
+        app.register_blueprint(auth.auth, url_prefix='/')
+
 
     return app

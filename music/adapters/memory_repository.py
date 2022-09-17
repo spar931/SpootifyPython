@@ -18,6 +18,8 @@ class MemoryRepository(AbstractRepository):
         self.__reviews = list()
         self.__data = data
 
+
+
     def add_user(self, user: User):
         self.__users.append(user)
 
@@ -37,3 +39,6 @@ class MemoryRepository(AbstractRepository):
 
     def get_reviews(self):
         return self.__reviews
+
+    def get_number_of_users(self):
+        return len(self.__users)
