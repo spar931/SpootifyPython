@@ -5,12 +5,12 @@ from flask import session
 
 def test_register(client):
     # Check that we retrieve the register page.
-    response_code = client.get('/auth/register').status_code
+    response_code = client.get('/authentication/register').status_code
     assert response_code == 200
 
     # Check that we can register a user successfully, supplying a valid user name and password.
     response = client.post(
-        '/auth/register',
+        '/authentication/register',
         data={'user_name': 'gmichael', 'password': 'CarelessWhisper1984'}
     )
     assert response.headers['Location'] == 'http://localhost/auth/login'
@@ -28,7 +28,7 @@ def test_register_with_invalid_input(client, user_name, password, message):
     # Check that attempting to register with invalid combinations of user name and password generate appropriate error
     # messages.
     response = client.post(
-        '/auth/register',
+        '/authentication/register',
         data={'user_name': user_name, 'password': password}
     )
     assert message in response.data
@@ -36,7 +36,7 @@ def test_register_with_invalid_input(client, user_name, password, message):
 
 def test_login(client, auth):
     # Check that we can retrieve the login page.
-    status_code = client.get('/auth/login').status_code
+    status_code = client.get('/authentication/login').status_code
     assert status_code == 200
 
     # Check that a successful login generates a redirect to the homepage.

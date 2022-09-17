@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from music.adapters.repository import AbstractRepository
-from music.domainmodel.user import User
+from music.domainmodel.track import User
 
 
 class NameNotUniqueException(Exception):

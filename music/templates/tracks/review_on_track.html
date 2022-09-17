@@ -7,26 +7,23 @@
         <h1>{{date}}</h1>
     </header>
 
-    <div style="clear:both">
-        <a href="{{article.hyperlink}}" target="_blank">
-            <img src={{article.image_hyperlink}} alt="article image">
-        </a>
-        <h2>{{article.title}}</h2>
-        <p>{{article.first_para}}</p>
-        <div style="float:left">
-            {% for tag in article.tags %}
-            <button class="btn-general-disabled" disable>{{ tag.name }}</button>
-            {% endfor %}
+    <h2>{{ track.title }}</h2>
+        <p>Track Artist: {{ track.artist.full_name }}</p>
+        <p>Track Album: {{ track.album.title }}</p>
+        <p>Track Genres: {% for genre in track.genres %}{{ genre.name }} {% endfor %}</p>
+        <p>Track Duration: {{ track.track_duration}} seconds </p>
+        <div id="link_bar">
+            <p>Track URL: <a href = "{{ track.track_url }}">{{ track.track_url }}</a></p>
         </div>
         <div class="form-wrapper">
             <form action="{{handler_url}}" method="post">
-                {{form.article_id}} <!-- Need to include this hidden field as it tracks the article being commented. -->
+                {{form.track_id}} <!-- Need to include this hidden field as it tracks the article being commented. -->
                 {{form.csrf_token}} <!-- Need to include this token - Flask WTForms requires it. -->
                 <br>
-                <div class ="form-field">{{form.comment.label}} </br>{{form.comment(size = 100, placeholder="type your comment", class="textarea", cols="50", rows="6", wrap="hard")}}
-                    {% if form.comment.errors %}
+                <div class ="form-field">{{form.review.label}} </br>{{form.review(size = 100, placeholder="type your review", class="textarea", cols="50", rows="6", wrap="hard")}}
+                    {% if form.review.errors %}
                         <ul class="errors">
-        	            {% for error in form.comment.errors %}
+        	            {% for error in form.review.errors %}
         		            <li>{{error}}</li>
                         {% endfor %}
                         </ul>
@@ -36,10 +33,9 @@
             </form>
         </div>
         <div style="clear:both">
-            {% for comment in article.comments %}
-                <p>{{comment.comment_text}}, by {{comment.user_name}}, {{comment.timestamp}}</p>
+            {% for review in track.comments %}
+                <p>{{review.review_text}}, by {{user_name}}, {{review.timestamp}}</p>
             {% endfor %}
         </div>
-    </article>
 </main>
 {% endblock %}

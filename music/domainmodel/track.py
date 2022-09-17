@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from music.domainmodel.artist import Artist
 from music.domainmodel.genre import Genre
 from music.domainmodel.album import Album
@@ -19,6 +21,11 @@ class Track:
         # duration in seconds
         self.__track_duration: int | None = None
         self.__genres: list = []
+        self.__reviews: list[Review] = []
+
+    @property
+    def track_reviews(self) -> list:
+        return self.__reviews
 
     @property
     def track_id(self) -> int:
@@ -103,3 +110,148 @@ class Track:
 
     def __hash__(self):
         return hash(self.track_id)
+
+
+class Review:
+
+    def __init__(self, track: Track, review_text: str, rating: int):
+        self.__track = None
+        if isinstance(track, Track):
+            self.__track = track
+
+        self.__review_text = 'N/A'
+        if isinstance(review_text, str):
+            self.__review_text = review_text.strip()
+
+        if isinstance(rating, int) and 1 <= rating <= 5:
+            self.__rating = rating
+        else:
+            raise ValueError('Invalid value for the rating.')
+
+        self.__timestamp = datetime.now()
+
+    @property
+    def track(self) -> Track:
+        return self.__track
+
+    @property
+    def review_text(self) -> str:
+        return self.__review_text
+
+    @review_text.setter
+    def review_text(self, new_text):
+        if type(new_text) is str:
+            self.__review_text = new_text.strip()
+        else:
+            self.__review_text = None
+
+    @property
+    def rating(self) -> int:
+        return self.__rating
+
+    @rating.setter
+    def rating(self, new_rating: int):
+        if isinstance(new_rating, int) and 1 <= new_rating <= 5:
+            self.__rating = new_rating
+        else:
+            self.__rating = None
+            raise ValueError("Wrong value for the rating")
+
+    @property
+    def timestamp(self) -> datetime:
+        return self.__timestamp
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return other.track == self.track and other.review_text == self.review_text and other.rating == self.rating and other.timestamp == self.timestamp
+
+    def __repr__(self):
+        return f'<Review of track {self.track}, rating = {self.rating}, review_text = {self.review_text}>'
+
+
+class User:
+
+    def __init__(self, user_id: int, user_name: str, password: str):
+        if type(user_id) is not int or user_id < 0:
+            raise ValueError("User ID should be a non negative integer.")
+        self.__user_id = user_id
+
+        if type(user_name) is str:
+            self.__user_name = user_name.lower().strip()
+        else:
+            self.__user_name = None
+
+        if isinstance(password, str) and len(password) >= 7:
+            self.__password = password
+        else:
+            self.__password = None
+
+        self.__reviews: list[Review] = []
+        self.__liked_tracks: list[Track] = []
+
+    @property
+    def user_id(self) -> int:
+        return self.__user_id
+
+    @property
+    def user_name(self) -> str:
+        return self.__user_name
+
+    @property
+    def password(self) -> str:
+        return self.__password
+
+    @property
+    def reviews(self) -> list:
+        return self.__reviews
+
+    def add_review(self, new_review: Review):
+        if not isinstance(new_review, Review) or new_review in self.__reviews:
+            return
+        self.__reviews.append(new_review)
+
+    def remove_review(self, review: Review):
+        if not isinstance(review, Review) or review not in self.__reviews:
+            return
+        self.__reviews.remove(review)
+
+    @property
+    def liked_tracks(self) -> list:
+        return self.__liked_tracks
+
+    def add_liked_track(self, track: Track):
+        if not isinstance(track, Track) or track in self.__liked_tracks:
+            return
+        self.__liked_tracks.append(track)
+
+    def remove_liked_track(self, track: Track):
+        if not isinstance(track, Track) or track not in self.__liked_tracks:
+            return
+        self.__liked_tracks.remove(track)
+
+    def __repr__(self):
+        return f'<User {self.user_name}, user id = {self.user_id}>'
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return self.user_id == other.user_id
+
+    def __lt__(self, other):
+        if not isinstance(other, self.__class__):
+            return True
+        return self.user_id < other.user_id
+
+    def __hash__(self):
+        return hash(self.user_id)
+
+
+def make_comment(review_text: str, user: User, track: Track, rating: int):
+    review = Review(track, review_text, rating)
+
+    user.add_review(review)
+    track.track_reviews.append(review)
+
+    return review
+

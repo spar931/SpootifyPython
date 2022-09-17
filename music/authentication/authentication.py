@@ -6,10 +6,10 @@ from wtforms.validators import DataRequired, Length, ValidationError
 from password_validator import PasswordValidator
 
 from functools import wraps
-import music.auth.services as services
+import music.authentication.services as services
 import music.adapters.repository as repo
 
-auth = Blueprint('auth', __name__, url_prefix='authentication')
+auth = Blueprint('authentication', __name__, url_prefix='authentication')
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -62,7 +62,7 @@ def register():
             services.add_user(form.user_name.data, form.password.data, repo.repo_instance)
 
             # All is well, redirect the user to the login page.
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('authentication.login'))
         except services.NameNotUniqueException:
             user_name_not_unique = 'Your user name is already taken - please supply another'
 
@@ -71,14 +71,14 @@ def register():
         title='Register',
         form=form,
         user_name_error_message=user_name_not_unique,
-        handler_url=url_for('auth.register'))
+        handler_url=url_for('authentication.register'))
 
 
 def login_required(view):
     @wraps(view)
     def wrapped_view(**kwargs):
         if 'user_name' not in session:
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('authentication.login'))
         return view(**kwargs)
 
     return wrapped_view

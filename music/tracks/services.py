@@ -1,11 +1,7 @@
 import string
 
-from music.domainmodel.artist import Artist
-from music.domainmodel.album import Album
-from music.domainmodel.track import Track
-from music.domainmodel.genre import Genre
-from music.domainmodel.user import User
-from music.domainmodel.review import Review
+from music.domainmodel.track import Track, Review, make_comment
+
 
 from music.adapters.repository import AbstractRepository
 
@@ -36,3 +32,18 @@ def get_track_by_id(repo: AbstractRepository, track_id):
     return repo.get_track_by_id(track_id)
 
 
+def add_review(track_id: int, rating: int, review_text: str, user_name: str, repo: AbstractRepository):
+    # Check that the track exists.
+    track = repo.get_track_by_id(track_id)
+    if track is None:
+        raise NonExistentArticleException
+
+    user = repo.get_user(user_name)
+    if user is None:
+        raise UnknownUserException
+
+    # Create review.
+    review = make_comment(review_text, user, track, 1)
+
+    # Update the repository.
+    repo.add_review(review)

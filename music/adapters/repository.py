@@ -1,8 +1,6 @@
 import abc
 
-from music.domainmodel.review import Review
-from music.domainmodel.user import User
-from music.domainmodel.track import Track
+from music.domainmodel.track import Track, Review, User
 
 
 repo_instance = None
