@@ -10,9 +10,9 @@ import music.auth.services as services
 import music.adapters.repository as repo
 
 
-auth = Blueprint('auth', __name__, url_prefix='authentication')
+auth = Blueprint('auth', __name__, url_prefix='/authentication')
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth.route('/login')
 def login():
     form = LoginForm()
     user_name_not_recognised = None
@@ -49,7 +49,7 @@ def logout():
     session.clear()
     return redirect(url_for('home_bp.home'))
 
-@auth.route('/register', methods=['GET', 'POST'])
+@auth.route('/register')
 def register():
     form = RegistrationForm()
     user_name_not_unique = None

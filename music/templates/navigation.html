@@ -6,6 +6,9 @@
     endif %}
   </h2>
   <a class="btn-nav" href="{{ url_for('home_bp.home') }}">Home</a>
+  <a class="btn-nav" href="{{ url_for('auth.register') }}">Register</a>
+  <a class="btn-nav" href="{{ url_for('auth.login') }}">Login</a>
+  <a class="btn-nav" href="{{ url_for('auth.logout') }}">Logout</a>
   <a class="btn-nav" href="{{ url_for('tracks_bp.browse_tracks_alphabetical_order') }}">Browse by Tracks</a>
   <a class="btn-nav" href="{{ url_for('artists_bp.browse_artists_alphabetical_order') }}">Browse by Artists</a>
   <a class="btn-nav" href="{{ url_for('albums_bp.browse_albums_alphabetical_order') }}">Browse by Albums</a>
