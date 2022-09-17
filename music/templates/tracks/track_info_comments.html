@@ -16,6 +16,14 @@
         {% endif %}
         <button class="btn-general" onclick="location.href='{{ add_comment_url }}'">Review</button>
     </div>
+    {% if track.track_reviews|length > 0 %}
+        <br><h4>Track Reviews</h4>
+            <div style="clear:both">
+                {% for review in track.track_reviews %}
+                    <p>{{review.review_text}}, {{review.timestamp}}</p>
+                {% endfor %}
+            </div>
+    {% endif %}
 
 </main>
 {% endblock %}

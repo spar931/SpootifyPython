@@ -23,6 +23,27 @@ def browse_tracks_alphabetical_order():
     return render_template('tracks/simple_track.html', tracks=tracks_alphabet_dict)
 
 
+@tracks_blueprint.route('/display_track_info_comments', methods=['GET'])
+def display_track_info_comments():
+    track_id = request.args.get('track_id')
+
+    if track_id is None:
+        # No view-comments query parameter, so set to a non-existent article id.
+        article_to_show_comments = -1
+    else:
+        # Convert article_to_show_comments from string to int.
+        article_to_show_comments = int(track_id)
+
+    chosen_track = services.get_track_by_id(repo.repo_instance, track_id)
+
+    # Construct urls for viewing article comments and adding comments.
+    view_comment_url = url_for('tracks_bp.display_track_info', track_id=chosen_track.track_id)
+    add_comment_url = url_for('tracks_bp.review_track', track_id=chosen_track.track_id)
+
+    return render_template('tracks/track_info_comments.html', track=chosen_track, view_comment_url=view_comment_url
+                           , add_comment_url=add_comment_url, track_id=track_id)
+
+
 @tracks_blueprint.route('/display_track_info', methods=['GET'])
 def display_track_info():
     track_id = request.args.get('track_id')
@@ -37,7 +58,7 @@ def display_track_info():
     chosen_track = services.get_track_by_id(repo.repo_instance, track_id)
 
     # Construct urls for viewing article comments and adding comments.
-    view_comment_url = url_for('tracks_bp.display_track_info', track_id=chosen_track.track_id)
+    view_comment_url = url_for('tracks_bp.display_track_info_comments', track_id=chosen_track.track_id)
     add_comment_url = url_for('tracks_bp.review_track', track_id=chosen_track.track_id)
 
     return render_template('tracks/track_info.html', track=chosen_track, view_comment_url=view_comment_url
@@ -68,7 +89,7 @@ def review_track():
 
         # Cause the web browser to display the page of all articles that have the same date as the commented article,
         # and display all comments, including the new comment.
-        return redirect(url_for('tracks_bp.display_track_info', track_id=track_id))
+        return redirect(url_for('tracks_bp.display_track_info_comments', track_id=track_id))
 
     if request.method == 'GET':
         # Request is a HTTP GET to display the form.
