@@ -1,0 +1,16 @@
+{% extends 'layout.html' %} {% block content %}
+<main id="main">
+    <h2>{{ album.title }}</h2>
+        <p>Album Type: {{ album.album_type }}</p>
+        <p>Album Release Year: {{ album.release_year }}</p>
+        <div id="link_bar">
+            <p> Album URL: <a href = "{{ album.album_url }}">{{ album.album_url }}</a></p>
+        <h3>Album Tracks:</h3>
+            <ol>
+                {% for track in tracks %}
+                    <li><a href="{{ url_for('tracks_bp.display_track_info', track_id = track.track_id) }}">{{ track.title }}</a></li>
+                {% endfor %}
+            </ol>
+        </div>
+</main>
+{% endblock %}

@@ -1,6 +1,9 @@
+import review as review
+
 from music.domainmodel.artist import Artist
 from music.domainmodel.genre import Genre
 from music.domainmodel.album import Album
+from music.domainmodel.review import Review
 
 
 class Track:
@@ -19,6 +22,21 @@ class Track:
         # duration in seconds
         self.__track_duration: int | None = None
         self.__genres: list = []
+        self.__reviews: list[Review] = []
+
+    @property
+    def track_reviews(self) -> list:
+        return self.__reviews
+
+    def add_review(self, new_review: Review):
+        if not isinstance(new_review, Review) or new_review in self.__reviews:
+            return
+        self.__reviews.append(new_review)
+
+    def remove_review(self, review: Review):
+        if not isinstance(review, Review) or review not in self.__reviews:
+            return
+        self.__reviews.remove(review)
 
     @property
     def track_id(self) -> int:
