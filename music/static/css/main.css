@@ -235,3 +235,41 @@ input[type='submit']:hover {
     fill: currentColor;
     overflow: hidden;
 }
+
+<style>
+    #link_bar a { padding:15px; font-weight:bold; float:left; }
+    #link_bar a:link {
+    color: darkblue;
+    background-color: transparent;
+    text-decoration: none;
+    }
+    #link_bar a:visited {
+    color: lightblue;
+    background-color: transparent;
+    text-decoration: none;
+    }
+    #link_bar a:hover {
+    color: red;
+    background-color: transparent;
+    text-decoration: underline;
+    }
+    #link_bar a:active {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: underline;
+    }
+</style>
+
+ol li {
+  float: left;
+  width: 200px;
+  margin-right: 30px;
+}
+ol li a {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -8,6 +8,8 @@ from music.domainmodel.genre import Genre
 from music.domainmodel.user import User
 from music.domainmodel.review import Review
 
+repo_instance = None
+
 
 class RepositoryException(Exception):
 
@@ -27,6 +29,34 @@ class AbstractRepository(abc.ABC):
 
         If there is no User with the given id, this method returns None.
         """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_tracks(self):
+        """ Gets all Tracks """
+        raise NotImplementedError
+
+    def get_artists(self):
+        """ Gets all Artists """
+        raise NotImplementedError
+
+    def get_albums(self):
+        """ Gets all Albums """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_track_by_id(self, track_id):
+        """ Gets specific track based on track_id """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_artist_by_id(self, track_id):
+        """ Gets specific artist based on artist_id """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_album_by_id(self, album_id):
+        """ Gets specific album based on album_id """
         raise NotImplementedError
 
     @abc.abstractmethod
