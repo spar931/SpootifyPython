@@ -8,7 +8,7 @@ utilities_blueprint = Blueprint(
     'utilities_bp', __name__)
 
 
-def get_top_tracks(quantity=18):
+def get_top_tracks(quantity=15):
 
     sorted_tracks = services.sort_tracks_by_reviews(repo.repo_instance)
     top_tracks = []

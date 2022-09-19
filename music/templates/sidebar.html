@@ -7,7 +7,8 @@
             <div id="link_bar">
                 <br>
                 <a href="{{ url_for('tracks_bp.display_track_info', track_id = track.track_id) }}"><em><strong>{{ track.title }}</strong></em></a><br>
-                <strong>Artist:</strong> {{ track.artist.full_name }}, <strong>Album:</strong> {{ track.album.title }}
+                <strong>Artist:</strong> {{ track.artist.full_name }}<br>
+                <strong>Album:</strong> {{ track.album.title }}
                 <br>
                 <br>
             </div>
