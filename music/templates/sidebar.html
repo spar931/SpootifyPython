@@ -6,8 +6,8 @@
         {% for track in selected_tracks %}
             <div id="link_bar">
                 <br>
-                    <a href="{{ url_for('tracks_bp.display_track_info', track_id = track.track_id) }}">{{ track.title }}</a><br>
-                    Artist: {{ track.artist.full_name }}, Album: {{ track.album.title }}
+                <a href="{{ url_for('tracks_bp.display_track_info', track_id = track.track_id) }}"><em><strong>{{ track.title }}</strong></em></a><br>
+                <strong>Artist:</strong> {{ track.artist.full_name }}, <strong>Album:</strong> {{ track.album.title }}
                 <br>
                 <br>
             </div>
