@@ -1,14 +1,64 @@
 {% extends 'layout.html' %} {% block content %}
 <main id="main">
-    {% for key,value in albums.items() %}
-        <h1><strong>{{ key }}</strong></h1>
-            <div id="link_bar">
-                <ul>
-                    {% for album in value %}
-                        <li><a href="{{ url_for('albums_bp.display_album_info', album_id = album.album_id) }}">{{ album.title }}</a></li>
-                    {% endfor %}
-                </ul>
+    <h1><strong>{{ cursor }}</strong></h1>
+        {% if albums|length < albums_per_page %}
+            {% for album in albums %}
+                    <div id="link_bar">
+                        <ul>
+                            <li><a href="{{ url_for('albums_bp.display_album_info', album_id = album.album_id) }}">{{ album.title }}</a></li>
+                        </ul>
+                    </div>
+            {% endfor %}
+
+        {% elif cursor2 + albums_per_page < albums|length %}
+            {% for album in albums[cursor2 : cursor2 + albums_per_page] %}
+                    <div id="link_bar">
+                        <ul>
+                            <li><a href="{{ url_for('albums_bp.display_album_info', album_id = album.album_id) }}">{{ album.title }}</a></li>
+                        </ul>
+                    </div>
+            {% endfor %}
+
+        {% else %}
+            {% for album in albums[cursor2 : ] %}
+                    <div id="link_bar">
+                        <ul>
+                            <li><a href="{{ url_for('albums_bp.display_album_info', album_id = album.album_id) }}">{{ album.title }}</a></li>
+                        </ul>
+                    </div>
+            {% endfor %}
+
+        {% endif %}
+
+    <footer>
+        <nav style="clear:both">
+            <div style="float:left">
+                {% for key in dict %}
+                    <button class="btn-general" onclick="location.href='{{url_for('albums_bp.browse_albums_alphabetical_order', cursor=key)}}'">{{ key }}</button>
+                {% endfor %}
             </div>
-    {% endfor %}
+
+            <div style="float:right">
+                {% if albums|length < albums_per_page %}
+                    <button class="btn-general-disabled" disabled>Previous {{ cursor }}</button>
+                    <button class="btn-general-disabled" disabled>Next {{ cursor }}</button>
+
+                {% elif cursor2 + albums_per_page < albums|length %}
+                    {% if cursor2 - albums_per_page >= 0 %}
+                        <button class="btn-general" onclick="location.href='{{url_for('albums_bp.browse_albums_alphabetical_order', cursor=cursor, cursor2=cursor2 - albums_per_page)}}'">Previous {{ cursor }}</button>
+                        <button class="btn-general" onclick="location.href='{{url_for('albums_bp.browse_albums_alphabetical_order', cursor=cursor, cursor2=cursor2 + albums_per_page)}}'">Next {{ cursor }}</button>
+                    {% else %}
+                        <button class="btn-general-disabled" disabled>Previous {{ cursor }}</button>
+                        <button class="btn-general" onclick="location.href='{{url_for('albums_bp.browse_albums_alphabetical_order', cursor=cursor, cursor2=cursor2 + albums_per_page)}}'">Next {{ cursor }}</button>
+                    {% endif %}
+                {% else %}
+                    <button class="btn-general" onclick="location.href='{{url_for('albums_bp.browse_albums_alphabetical_order', cursor=cursor, cursor2=cursor2 - albums_per_page)}}'">Previous {{ cursor }}</button>
+                    <button class="btn-general-disabled" disabled>Next {{ cursor }}</button>
+
+                {% endif %}
+            </div>
+        </nav>
+    </footer>
+
 </main>
 {% endblock %}
