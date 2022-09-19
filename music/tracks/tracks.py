@@ -20,7 +20,25 @@ tracks_blueprint = Blueprint(
 @tracks_blueprint.route('/browse_tracks_alphabetical', methods=['GET'])
 def browse_tracks_alphabetical_order():
     tracks_alphabet_dict = services.get_tracks_by_alphabetical_order(repo.repo_instance)
-    return render_template('tracks/simple_track.html', tracks=tracks_alphabet_dict, selected_tracks=utilities.get_top_tracks())
+
+    cursor = request.args.get('cursor')
+
+    if cursor is None:
+        # No cursor query parameter, so initialise cursor to start at the beginning.
+        cursor = 'A'
+
+    tracks_per_page = 45
+
+    cursor2 = request.args.get('cursor2')
+
+    if cursor2 is None:
+        # No cursor query parameter, so initialise cursor to start at the beginning.
+        cursor2 = 0
+    else:
+        # Convert cursor from string to int.
+        cursor2 = int(cursor2)
+
+    return render_template('tracks/simple_track.html', cursor=cursor, cursor2=cursor2, tracks=tracks_alphabet_dict[cursor], selected_tracks=utilities.get_top_tracks(), dict=tracks_alphabet_dict, tracks_per_page=tracks_per_page)
 
 
 @tracks_blueprint.route('/display_track_info_comments', methods=['GET'])
