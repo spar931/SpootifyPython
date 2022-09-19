@@ -35,12 +35,12 @@ class AuthenticationManager:
 
     def login(self, user_name='thorke', password='cLQ^C#oFXloS'):
         return self.__client.post(
-            'auth/login',
+            'authentication/login',
             data={'user_name': user_name, 'password': password}
         )
 
     def logout(self):
-        return self.__client.get('/auth/logout')
+        return self.__client.get('/authentication/logout')
 
 
 @pytest.fixture
