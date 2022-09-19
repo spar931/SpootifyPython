@@ -21,12 +21,12 @@ def add_user(user_name: str, password: str, repo: AbstractRepository):
     user = repo.get_user(user_name)
     if user is not None:
         raise NameNotUniqueException
-    id = repo.get_number_of_users()
+    user_id = repo.get_number_of_users()
     # Encrypt password so that the database doesn't store passwords 'in the clear'.
     password_hash = generate_password_hash(password)
 
     # Create and store the new User, with password encrypted.
-    user = User(id, user_name, password_hash)
+    user = User(user_id, user_name, password_hash)
     repo.add_user(user)
 
 

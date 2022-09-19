@@ -37,6 +37,7 @@ def create_app(test_config=None):
         # Register blueprints.
         from .home import home
         app.register_blueprint(home.home_blueprint)
+
         from .authentication import authentication
         app.register_blueprint(authentication.auth, url_prefix='/')
 
@@ -48,5 +49,8 @@ def create_app(test_config=None):
 
         from .albums import albums
         app.register_blueprint(albums.albums_blueprint)
+
+        from .utilities import utilities
+        app.register_blueprint(utilities.utilities_blueprint)
 
     return app

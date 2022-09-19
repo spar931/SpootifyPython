@@ -78,3 +78,7 @@ class AbstractRepository(abc.ABC):
     def get_reviews(self):
         """ Returns the Reviews stored in the repository. """
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_number_of_users(self):
+        raise NotImplementedError

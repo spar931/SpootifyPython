@@ -1,17 +1,15 @@
 <aside id="sidebar">
 
     <header>
-        <h1>Editor's picks</h1>
+        <h1>Popular tracks</h1>
     </header>
-
-    {% for article in selected_articles %}
-        <div id="article-container">
-            <a href="{{ article.hyperlink }}" >
-                <img src={{ article.image_hyperlink }} class="img-small">
-            </a>
-            <div id="article-description">
-                <p>{{ article.title }}, ({{ article.date }}).</p>
+        {% for track in selected_tracks %}
+            <div id="link_bar">
+                <br>
+                    <a href="{{ url_for('tracks_bp.display_track_info', track_id = track.track_id) }}">{{ track.title }}</a><br>
+                    Artist: {{ track.artist.full_name }}, Album: {{ track.album.title }}
+                <br>
+                <br>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
 </aside>

@@ -8,6 +8,7 @@ from password_validator import PasswordValidator
 from functools import wraps
 import music.authentication.services as services
 import music.adapters.repository as repo
+from music.utilities import utilities
 
 auth = Blueprint('authentication', __name__, url_prefix='authentication')
 
@@ -42,6 +43,7 @@ def login():
                            title='Login',
                            user_name_error_message=user_name_not_recognised,
                            password_error_message=password_does_not_match_user_name,
+                           selected_tracks=utilities.get_top_tracks(),
                            form=form)
 
 
@@ -71,7 +73,9 @@ def register():
         title='Register',
         form=form,
         user_name_error_message=user_name_not_unique,
-        handler_url=url_for('authentication.register'))
+        handler_url=url_for('authentication.register'),
+        selected_tracks=utilities.get_top_tracks()
+        )
 
 
 def login_required(view):

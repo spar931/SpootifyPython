@@ -10,9 +10,9 @@ import music.tracks.services as services
 
 from music.authentication.authentication import login_required
 from music.domainmodel.track import Track, Review, make_comment
+from music.utilities import utilities
 
 # Configure Blueprint.
-
 tracks_blueprint = Blueprint(
     'tracks_bp', __name__)
 
@@ -20,7 +20,7 @@ tracks_blueprint = Blueprint(
 @tracks_blueprint.route('/browse_tracks_alphabetical', methods=['GET'])
 def browse_tracks_alphabetical_order():
     tracks_alphabet_dict = services.get_tracks_by_alphabetical_order(repo.repo_instance)
-    return render_template('tracks/simple_track.html', tracks=tracks_alphabet_dict)
+    return render_template('tracks/simple_track.html', tracks=tracks_alphabet_dict, selected_tracks=utilities.get_top_tracks())
 
 
 @tracks_blueprint.route('/display_track_info_comments', methods=['GET'])
@@ -41,7 +41,7 @@ def display_track_info_comments():
     add_comment_url = url_for('tracks_bp.review_track', track_id=chosen_track.track_id)
 
     return render_template('tracks/track_info_comments.html', track=chosen_track, view_comment_url=view_comment_url
-                           , add_comment_url=add_comment_url, track_id=track_id)
+                           , add_comment_url=add_comment_url, track_id=track_id, selected_tracks=utilities.get_top_tracks())
 
 
 @tracks_blueprint.route('/display_track_info', methods=['GET'])
@@ -62,7 +62,7 @@ def display_track_info():
     add_comment_url = url_for('tracks_bp.review_track', track_id=chosen_track.track_id)
 
     return render_template('tracks/track_info.html', track=chosen_track, view_comment_url=view_comment_url
-                           , add_comment_url=add_comment_url, track_id=track_id)
+                           , add_comment_url=add_comment_url, track_id=track_id, selected_tracks=utilities.get_top_tracks())
 
 
 @tracks_blueprint.route('/review', methods=['GET', 'POST'])
@@ -112,7 +112,8 @@ def review_track():
         track=track,
         form=form,
         handler_url=url_for('tracks_bp.review_track'),
-        user_name=user_name
+        user_name=user_name,
+        selected_tracks=utilities.get_top_tracks()
     )
 
 
