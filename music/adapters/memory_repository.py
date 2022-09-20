@@ -34,6 +34,15 @@ class MemoryRepository(AbstractRepository):
     def get_number_of_tracks(self) -> int:
         return len(self.__data.dataset_of_tracks)
 
+    def get_number_of_artists(self) -> int:
+        return len(self.__data.dataset_of_artists)
+
+    def get_number_of_albums(self) -> int:
+        return len(self.__data.dataset_of_albums)
+
+    def get_number_of_genres(self) -> int:
+        return len(self.__data.dataset_of_genres)
+
     def get_track_by_id(self, track_id):
         chosen_track = None
         for track in self.__data.dataset_of_tracks:
