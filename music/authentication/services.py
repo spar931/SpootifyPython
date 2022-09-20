@@ -21,6 +21,7 @@ def add_user(user_name: str, password: str, repo: AbstractRepository):
     user = repo.get_user(user_name)
     if user is not None:
         raise NameNotUniqueException
+
     user_id = repo.get_number_of_users()
     # Encrypt password so that the database doesn't store passwords 'in the clear'.
     password_hash = generate_password_hash(password)
@@ -55,6 +56,7 @@ def authenticate_user(user_name: str, password: str, repo: AbstractRepository):
 def user_to_dict(user: User):
     user_dict = {
         'user_name': user.user_name,
-        'password': user.password
+        'password': user.password,
+        'id': user.user_id
     }
     return user_dict

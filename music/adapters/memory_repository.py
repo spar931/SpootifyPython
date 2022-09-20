@@ -16,8 +16,8 @@ class MemoryRepository(AbstractRepository):
     def add_user(self, user: User):
         self.__users.append(user)
 
-    def get_user(self, user_id) -> User:
-        return next((user for user in self.__users if user.user_name == user_id), None)
+    def get_user(self, user_name) -> User:
+        return next((user for user in self.__users if user.user_name == user_name), None)
 
     def get_tracks(self):
         return self.__data.dataset_of_tracks
