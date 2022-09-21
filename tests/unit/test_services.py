@@ -143,7 +143,7 @@ def test_get_last_letter_in_alphabet(in_memory_repo):
 
 
 def test_get_reviews_for_track(in_memory_repo):
-    track_id = 3
+    track_id = 2
     tracks_services.get_track_by_id(in_memory_repo, track_id)
     user_name = 'fmercury'
     review_text = 'my favourite track'
@@ -154,7 +154,7 @@ def test_get_reviews_for_track(in_memory_repo):
     # Call the service layer to add the review.
     tracks_services.add_review(track_id, rating, review_text, user_name, in_memory_repo)
 
-    track_id = 3
+    track_id = 2
     tracks_services.get_track_by_id(in_memory_repo, track_id)
     user_name = 'fmercury'
     review_text = 'no longer my favourite track'
@@ -163,12 +163,12 @@ def test_get_reviews_for_track(in_memory_repo):
     # Call the service layer to add the review.
     tracks_services.add_review(track_id, rating, review_text, user_name, in_memory_repo)
 
-    track_reviews = tracks_services.get_reviews_for_track(3, in_memory_repo)
+    track_reviews = tracks_services.get_reviews_for_track(track_id, in_memory_repo)
 
-    # Check that 2 reviews were returned for article with id 3.
+    # Check that 2 reviews were returned for article with id 2.
     assert len(track_reviews) == 2
 
-    # Check that the comments relate to the article whose id is 1.
+    # Check that the reviews relate to the track whose id is 2.
     assert track_reviews[0].review_text == 'my favourite track'
     assert track_reviews[1].review_text == 'no longer my favourite track'
 
@@ -179,7 +179,7 @@ def test_get_reviews_for_non_existent_track(in_memory_repo):
 
 
 def test_get_reviews_for_track_without_reviews(in_memory_repo):
-    track_reviews = tracks_services.get_reviews_for_track(3, in_memory_repo)
+    track_reviews = tracks_services.get_reviews_for_track(2, in_memory_repo)
     assert len(track_reviews) == 0
 
 

@@ -118,7 +118,7 @@ def test_repository_can_retrieve_comments(in_memory_repo):
     user = User(0, 'fmercury', 'abcd1A23')
     in_memory_repo.add_user(user)
 
-    track = in_memory_repo.get_track_by_id(3)
+    track = in_memory_repo.get_track_by_id(2)
 
     review1 = make_comment('great track', user, track, 4)
     review2 = make_comment('eh', user, track, 3)
@@ -127,4 +127,3 @@ def test_repository_can_retrieve_comments(in_memory_repo):
     in_memory_repo.add_review(review2)
 
     assert len(in_memory_repo.get_reviews()) == 2
-    

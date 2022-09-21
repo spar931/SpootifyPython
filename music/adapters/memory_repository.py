@@ -4,6 +4,7 @@ from music.domainmodel.track import Track, Review, User
 
 from music.adapters.repository import AbstractRepository
 from music.adapters.csvdatareader import TrackCSVReader
+from music.domainmodel.track import Review
 
 
 class MemoryRepository(AbstractRepository):
@@ -77,3 +78,4 @@ class MemoryRepository(AbstractRepository):
 
     def get_number_of_users(self):
         return len(self.__users)
+
