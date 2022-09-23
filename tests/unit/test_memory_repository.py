@@ -127,3 +127,4 @@ def test_repository_can_retrieve_comments(in_memory_repo):
     in_memory_repo.add_review(review2)
 
     assert len(in_memory_repo.get_reviews()) == 2
+
