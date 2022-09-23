@@ -58,7 +58,8 @@ def test_register(client):
         '/register',
         data={'user_name': 'gmichael', 'password': 'CarelessWhisper1984'}
     )
-    assert response.headers['Location'] == '/login'
+    assert response.headers['Location'] == 'http://localhost/authentication/login'
+
 
 
 @pytest.mark.parametrize(('user_name', 'password', 'message'), (

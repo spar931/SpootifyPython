@@ -20,7 +20,7 @@ def test_repository_can_retrieve_a_user(in_memory_repo):
     in_memory_repo.add_user(user)
 
     user = in_memory_repo.get_user('fmercury')
-    assert user == User(0, 'fmercury', '8734gfe2058v')
+    assert user == User(1234, 'fmercury', '8734gfe2058v')
 
 
 def test_repository_does_not_retrieve_a_non_existent_user(in_memory_repo):
