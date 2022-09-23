@@ -3,6 +3,10 @@ import string
 from music.adapters.repository import AbstractRepository
 
 
+class NonExistentArtistException(Exception):
+    pass
+
+
 def get_artists_by_alphabetical_order(repo: AbstractRepository):
 
     alphabet_dict = {k: [] for k in string.ascii_uppercase}
@@ -18,7 +22,10 @@ def get_artists_by_alphabetical_order(repo: AbstractRepository):
 
 
 def get_artist_by_id(repo: AbstractRepository, artist_id):
-    return repo.get_artist_by_id(artist_id)
+    artist = repo.get_artist_by_id(artist_id)
+    if artist is None:
+        raise NonExistentArtistException
+    return artist
 
 
 def get_tracks_by_artist(repo: AbstractRepository, chosen_artist):

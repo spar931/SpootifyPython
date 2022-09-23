@@ -47,7 +47,7 @@ def create_app(test_config=None):
         app.register_blueprint(home.home_blueprint)
 
         from .authentication import authentication
-        app.register_blueprint(authentication.auth, url_prefix='/')
+        app.register_blueprint(authentication.auth)
 
         from .tracks import tracks
         app.register_blueprint(tracks.tracks_blueprint)

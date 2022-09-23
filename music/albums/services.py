@@ -3,8 +3,15 @@ import string
 from music.adapters.repository import AbstractRepository
 
 
+class NonExistentAlbumException(Exception):
+    pass
+
+
 def get_album_by_id(repo: AbstractRepository, album_id):
-    return repo.get_album_by_id(album_id)
+    album = repo.get_album_by_id(album_id)
+    if album is None:
+        raise NonExistentAlbumException
+    return album
 
 
 def get_albums_by_alphabetical_order(repo: AbstractRepository):

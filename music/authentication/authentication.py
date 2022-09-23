@@ -10,7 +10,7 @@ import music.authentication.services as services
 import music.adapters.repository as repo
 from music.utilities import utilities
 
-auth = Blueprint('authentication', __name__, url_prefix='authentication')
+auth = Blueprint('authentication', __name__, url_prefix='/authentication')
 
 
 @auth.route('/login', methods=['GET', 'POST'])

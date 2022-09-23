@@ -4,6 +4,9 @@ from music.authentication.services import AuthenticationException
 from music.authentication import services as auth_services
 from music.tracks import services as tracks_services
 from music.tracks.services import NonExistentTrackException
+from music.utilities import services as utility_services
+from music.albums import services as albums_services
+from music.artists import services as artists_services
 
 
 def test_can_add_user(in_memory_repo):
@@ -127,9 +130,69 @@ def test_can_get_track(in_memory_repo):
 def test_cannot_get_track_with_non_existent_id(in_memory_repo):
     track_id = 1
 
-    # Call the service layer to attempt to retrieve the Article.
     with pytest.raises(tracks_services.NonExistentTrackException):
         tracks_services.get_track_by_id(in_memory_repo, track_id)
+
+
+def test_can_get_album(in_memory_repo):
+    album_id = 6
+
+    album = albums_services.get_album_by_id(in_memory_repo, album_id)
+
+    assert album.album_id == album_id
+    assert album.title == "Constant Hitmaker"
+    assert album.release_year == 2008
+
+
+def test_cannot_get_album_with_non_existent_id(in_memory_repo):
+    track_id = 3
+
+    with pytest.raises(albums_services.NonExistentAlbumException):
+        albums_services.get_album_by_id(in_memory_repo, track_id)
+
+
+def test_can_get_artist(in_memory_repo):
+    artist_id = 1
+
+    artist = artists_services.get_artist_by_id(in_memory_repo, artist_id)
+
+    assert artist.artist_id == artist_id
+    assert artist.full_name == "AWOL"
+
+
+def test_cannot_get_artist_with_non_existent_id(in_memory_repo):
+    artist_id = 3
+
+    with pytest.raises(artists_services.NonExistentArtistException):
+        artists_services.get_artist_by_id(in_memory_repo, artist_id)
+
+
+def test_can_get_tracks_by_artist(in_memory_repo):
+    artist_id = 6
+
+    artist = artists_services.get_artist_by_id(in_memory_repo, artist_id)
+    tracks_by_artist = artists_services.get_tracks_by_artist(in_memory_repo, artist)
+
+    assert "Freeway" == tracks_by_artist[0].title
+
+
+def test_can_get_tracks_in_album(in_memory_repo):
+    album_id = 6
+
+    album = albums_services.get_album_by_id(in_memory_repo, album_id)
+    tracks_in_albums = albums_services.get_tracks_in_album(in_memory_repo, album)
+
+    assert "Freeway" == tracks_in_albums[0].title
+
+
+def test_get_second_letter_in_alphabet_album(in_memory_repo):
+    alphabet_dict = albums_services.get_albums_by_alphabetical_order(in_memory_repo)
+    assert list(alphabet_dict.keys())[1] == 'B'
+
+
+def test_get_third_letter_in_alphabet_artist(in_memory_repo):
+    alphabet_dict = artists_services.get_artists_by_alphabetical_order(in_memory_repo)
+    assert list(alphabet_dict.keys())[2] == 'C'
 
 
 def test_get_first_letter_in_alphabet(in_memory_repo):
@@ -156,7 +219,6 @@ def test_get_reviews_for_track(in_memory_repo):
 
     track_id = 2
     tracks_services.get_track_by_id(in_memory_repo, track_id)
-    user_name = 'fmercury'
     review_text = 'no longer my favourite track'
     rating = 2
 
@@ -183,3 +245,25 @@ def test_get_reviews_for_track_without_reviews(in_memory_repo):
     assert len(track_reviews) == 0
 
 
+def test_popular_reviews(in_memory_repo):
+    track_id = 48
+    tracks_services.get_track_by_id(in_memory_repo, track_id)
+    user_name = 'fmercury'
+    review_text = 'no longer my favourite track'
+    rating = 2
+
+    auth_services.add_user(user_name, 'abcd1A23', in_memory_repo)
+    # Call the service layer to add the review.
+    tracks_services.add_review(track_id, rating, review_text, user_name, in_memory_repo)
+
+    track_id = 134
+    tracks_services.get_track_by_id(in_memory_repo, track_id)
+    review_text = 'my favourite track'
+    rating = 5
+
+    # Call the service layer to add the review.
+    tracks_services.add_review(track_id, rating, review_text, user_name, in_memory_repo)
+
+    popular_tracks = utility_services.sort_tracks_by_reviews(in_memory_repo)
+    assert popular_tracks[0].track_id == 48
+    assert popular_tracks[1].track_id == 134
