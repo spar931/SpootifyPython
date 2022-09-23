@@ -43,6 +43,7 @@ class AuthenticationManager:
         return self.__client.get('/authentication/logout')
 
 
+
 @pytest.fixture
 def auth(client):
     return AuthenticationManager(client)

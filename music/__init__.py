@@ -7,6 +7,9 @@ from flask import Flask
 import music.adapters.repository as repo
 from music.adapters.csvdatareader import TrackCSVReader
 from music.adapters.memory_repository import MemoryRepository
+from music.domainmodel.track import Review
+from music.tracks import services as tracks_services
+import music.adapters.repository as repo
 
 
 def create_app(test_config=None):
@@ -32,6 +35,11 @@ def create_app(test_config=None):
     # Create the MemoryRepository implementation for a memory-based repository.
     repo.repo_instance = MemoryRepository(data)
 
+    track_id = 3
+    track = tracks_services.get_track_by_id(repo.repo_instance, track_id)
+    review_text = 'my favourite track'
+    track.track_reviews.append(Review(track, review_text, 4))
+
     # Build the application - these steps require an application context.
     with app.app_context():
         # Register blueprints.
@@ -39,7 +47,7 @@ def create_app(test_config=None):
         app.register_blueprint(home.home_blueprint)
 
         from .authentication import authentication
-        app.register_blueprint(authentication.auth, url_prefix='/')
+        app.register_blueprint(authentication.auth)
 
         from .tracks import tracks
         app.register_blueprint(tracks.tracks_blueprint)

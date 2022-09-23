@@ -6,7 +6,7 @@ from music.domainmodel.track import Track, Review, make_comment
 from music.adapters.repository import AbstractRepository
 
 
-class NonExistentArticleException(Exception):
+class NonExistentTrackException(Exception):
     pass
 
 
@@ -29,7 +29,10 @@ def get_tracks_by_alphabetical_order(repo: AbstractRepository):
 
 
 def get_track_by_id(repo: AbstractRepository, track_id):
-    return repo.get_track_by_id(track_id)
+    track = repo.get_track_by_id(track_id)
+    if track is None:
+        raise NonExistentTrackException
+    return track
 
 
 def add_review(track_id: int, rating: int, review_text: str, user_name: str, repo: AbstractRepository):
@@ -37,7 +40,7 @@ def add_review(track_id: int, rating: int, review_text: str, user_name: str, rep
     # Check that the track exists.
     track = repo.get_track_by_id(track_id)
     if track is None:
-        raise NonExistentArticleException
+        raise NonExistentTrackException
 
     user = repo.get_user(user_name)
     if user is None:
@@ -50,4 +53,11 @@ def add_review(track_id: int, rating: int, review_text: str, user_name: str, rep
     repo.add_review(review)
 
 
+def get_reviews_for_track(track_id, repo: AbstractRepository):
+    track = repo.get_track_by_id(track_id)
+
+    if track is None:
+        raise NonExistentTrackException
+
+    return track.track_reviews
 

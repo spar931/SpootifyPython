@@ -1,14 +1,64 @@
 {% extends 'layout.html' %} {% block content %}
 <main id="main">
-    {% for key,value in artists.items() %}
-        <h1><strong>{{ key }}</strong></h1>
-            <div id="link_bar">
-                <ul>
-                    {% for artist in value %}
-                        <li><a href="{{ url_for('artists_bp.display_artist_info', artist_id = artist.artist_id) }}">{{ artist.full_name }}</a></li>
-                    {% endfor %}
-                </ul>
+    <h1><strong>{{ cursor }}</strong></h1>
+        {% if artists|length < artists_per_page %}
+            {% for artist in artists %}
+                    <div id="link_bar">
+                        <ul>
+                            <li><a href="{{ url_for('artists_bp.display_artist_info', artist_id = artist.artist_id) }}">{{ artist.full_name }}</a></li>
+                        </ul>
+                    </div>
+            {% endfor %}
+
+        {% elif cursor2 + artists_per_page < artists|length %}
+            {% for artist in artists[cursor2 : cursor2 + artists_per_page] %}
+                    <div id="link_bar">
+                        <ul>
+                            <li><a href="{{ url_for('artists_bp.display_artist_info', artist_id = artist.artist_id) }}">{{ artist.full_name }}</a></li>
+                        </ul>
+                    </div>
+            {% endfor %}
+
+        {% else %}
+            {% for artist in artists[cursor2 : ] %}
+                    <div id="link_bar">
+                        <ul>
+                            <li><a href="{{ url_for('artists_bp.display_artist_info', artist_id = artist.artist_id) }}">{{ artist.full_name }}</a></li>
+                        </ul>
+                    </div>
+            {% endfor %}
+
+        {% endif %}
+
+    <footer>
+        <nav style="clear:both">
+            <div style="float:left">
+                {% for key in dict %}
+                    <button class="btn-general" onclick="location.href='{{url_for('artists_bp.browse_artists_alphabetical_order', cursor=key)}}'">{{ key }}</button>
+                {% endfor %}
             </div>
-    {% endfor %}
+
+            <div style="float:right">
+                {% if artists|length < artists_per_page %}
+                    <button class="btn-general-disabled" disabled>Previous {{ cursor }}</button>
+                    <button class="btn-general-disabled" disabled>Next {{ cursor }}</button>
+
+                {% elif cursor2 + artists_per_page < artists|length %}
+                    {% if cursor2 - artists_per_page >= 0 %}
+                        <button class="btn-general" onclick="location.href='{{url_for('artists_bp.browse_artists_alphabetical_order', cursor=cursor, cursor2=cursor2 - artists_per_page)}}'">Previous {{ cursor }}</button>
+                        <button class="btn-general" onclick="location.href='{{url_for('artists_bp.browse_artists_alphabetical_order', cursor=cursor, cursor2=cursor2 + artists_per_page)}}'">Next {{ cursor }}</button>
+                    {% else %}
+                        <button class="btn-general-disabled" disabled>Previous {{ cursor }}</button>
+                        <button class="btn-general" onclick="location.href='{{url_for('artists_bp.browse_artists_alphabetical_order', cursor=cursor, cursor2=cursor2 + artists_per_page)}}'">Next {{ cursor }}</button>
+                    {% endif %}
+                {% else %}
+                    <button class="btn-general" onclick="location.href='{{url_for('artists_bp.browse_artists_alphabetical_order', cursor=cursor, cursor2=cursor2 - artists_per_page)}}'">Previous {{ cursor }}</button>
+                    <button class="btn-general-disabled" disabled>Next {{ cursor }}</button>
+
+                {% endif %}
+            </div>
+        </nav>
+    </footer>
+
 </main>
 {% endblock %}
