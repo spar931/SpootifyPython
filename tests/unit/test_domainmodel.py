@@ -745,3 +745,4 @@ class TestCSVReader:
         # genre id = 3>]'
         sorted_genre_sample = str(sorted_genres[:3])
         assert sorted_genre_sample == '[<Genre Avant-Garde, genre id = 1>, <Genre International, genre id = 2>, <Genre Blues, genre id = 3>]'
+
