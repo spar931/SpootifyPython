@@ -19,65 +19,79 @@ users_table = Table(
     Column('password', String(255), nullable=False)
 )
 
-comments_table = Table(
-    'comments', metadata,
+reviews_table = Table(
+    'reviews', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('user_id', ForeignKey('users.id')),
-    Column('article_id', ForeignKey('articles.id')),
-    Column('comment', String(1024), nullable=False),
+    Column('track_id', ForeignKey('tracks.id')),
+    Column('review_text', String(1024), nullable=False),
+    Column('rating', Integer, nullable=True),
     Column('timestamp', DateTime, nullable=False)
 )
 
-articles_table = Table(
-    'articles', metadata,
+tracks_table = Table(
+    'tracks', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('date', Date, nullable=False),
+    Column('duration', Integer, nullable=False),
     Column('title', String(255), nullable=False),
-    Column('first_paragraph', String(1024), nullable=False),
-    Column('hyperlink', String(255), nullable=False),
-    Column('image_hyperlink', String(255), nullable=False)
+    Column('artist_id', ForeignKey('artists.id')),
+    Column('album_id', ForeignKey('albums.id')),
+    # Column('reviews_id', ForeignKey('reviews.id')),
+    # Column('genres_id', ForeignKey('genres.id')),
+    Column('url', String(255), nullable=False)
 )
 
-tags_table = Table(
-    'tags', metadata,
+artists_table = Table(
+    'artists', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('tag_name', String(64), nullable=False)
+    Column('full_name', String(64), nullable=False)
 )
 
-article_tags_table = Table(
-    'article_tags', metadata,
+albums_table = Table(
+    'albums', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('article_id', ForeignKey('articles.id')),
-    Column('tag_id', ForeignKey('tags.id'))
+    Column('title', String(255), nullable=False),
+    Column('url', String(255), nullable=False),
+    Column('type', String(255), nullable=False)
+    Column('release_year', Integer, nullable=False)
+)
+
+genres_table = Table(
+    'genres', metadata,
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('name', String(255), nullable=False)
 )
 
 def map_model_to_tables():
-    mapper(model.User, users_table, properties={
+    mapper(User, users_table, properties={
         '_User__user_name': users_table.c.user_name,
-        '_User__password': users_table.c.password,
-        '_User__comments': relationship(model.Comment, backref='_Comment__user')
+        '_User__password': users_table.c.password
     })
-    mapper(model.Comment, comments_table, properties={
-        '_Comment__comment': comments_table.c.comment,
-        '_Comment__timestamp': comments_table.c.timestamp
+    mapper(Review, reviews_table, properties={
+        '_Review__review_text': reviews_table.c.review,
+        '_Review__track_id': reviews_table.c.track_id,
+        '_Review__rating': reviews_table.c.rating,
+        '_Comment__timestamp': reviews_table.c.timestamp
     })
-    mapper(model.Article, articles_table, properties={
-        '_Article__id': articles_table.c.id,
-        '_Article__date': articles_table.c.date,
-        '_Article__title': articles_table.c.title,
-        '_Article__first_paragraph': articles_table.c.first_paragraph,
-        '_Article__hyperlink': articles_table.c.hyperlink,
-        '_Article__image_hyperlink': articles_table.c.image_hyperlink,
-        '_Article__comments': relationship(model.Comment, backref='_Comment__article'),
-        '_Article__tags': relationship(model.Tag, secondary=article_tags_table,
-                                       back_populates='_Tag__tagged_articles')
+    mapper(Track, tracks_table, properties={
+        '_Track__id': tracks_table.c.id,
+        '_Track__duration': tracks_table.c.duration,
+        '_Track__title': tracks_table.c.title,
+        '_Track__artist_id': tracks_table.c.artist_id,
+        '_Track__album_id': tracks_table.c.album_id,
+        '_Track__url': tracks_table.c.url,
+        '_Track__reviews': relationship(Review, backref='_Review__track'),
+        '_Track__genres': relationship(Genre, backref='_Genre__track')
     })
-    mapper(model.Tag, tags_table, properties={
-        '_Tag__tag_name': tags_table.c.tag_name,
-        '_Tag__tagged_articles': relationship(
-            model.Article,
-            secondary=article_tags_table,
-            back_populates="_Article__tags"
-        )
+    mapper(Artist, artists_table, properties={
+        '_Artist__full_name': artists_table.c.full_name
+    })
+    mapper(Album, albums_table, properties={
+        '_Album__title': albums_table.c.title,
+        '_Album__url': albums_table.c.url,
+        '_Album__type': albums_table.c.type,
+        '_Album__release_year': albums_table.c.release_year
+    })
+    mapper(Genre, genres_table, properties={
+        '_Genre__name': genres_table.c.name
     })
 
