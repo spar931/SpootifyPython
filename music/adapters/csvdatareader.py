@@ -62,16 +62,17 @@ def extract_genres(track_row: dict):
 
 class TrackCSVReader:
 
-    def __init__(self, albums_csv_file: str, tracks_csv_file: str):
-        if type(albums_csv_file) is str:
-            self.__albums_csv_file = albums_csv_file
-        else:
-            raise TypeError('albums_csv_file should be a type of string')
+    def __init__(self):
 
-        if type(tracks_csv_file) is str:
-            self.__tracks_csv_file = tracks_csv_file
-        else:
-            raise TypeError('tracks_csv_file should be a type of string')
+        # if type(albums_csv_file) is str:
+        #     self.__albums_csv_file = albums_csv_file
+        # else:
+        #     raise TypeError('albums_csv_file should be a type of string')
+        #
+        # if type(tracks_csv_file) is str:
+        #     self.__tracks_csv_file = tracks_csv_file
+        # else:
+        #     raise TypeError('tracks_csv_file should be a type of string')
 
         # List of unique tracks
         self.__dataset_of_tracks = []
@@ -104,7 +105,7 @@ class TrackCSVReader:
 
         album_dict = dict()
         # encoding of unicode_escape is required to decode successfully
-        with open(self.__albums_csv_file, encoding="unicode_escape") as album_csv:
+        with open(str(data_path / "raw_albums_excerpt.csv"), encoding="unicode_escape") as album_csv:
             reader = csv.DictReader(album_csv)
             for row in reader:
                 album_id = int(
@@ -124,7 +125,7 @@ class TrackCSVReader:
             return
         track_rows = []
         # encoding of unicode_escape is required to decode successfully
-        with open(self.__tracks_csv_file, encoding='unicode_escape') as track_csv:
+        with open(str(data_path / "raw_tracks_excerpt.csv"), encoding='unicode_escape') as track_csv:
             reader = csv.DictReader(track_csv)
             for track_row in reader:
                 track_rows.append(track_row)

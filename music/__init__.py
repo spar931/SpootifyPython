@@ -38,8 +38,8 @@ def create_app(test_config=None):
 
     if app.config['REPOSITORY'] == 'memory':
         # Create the MemoryRepository implementation for a memory-based repository.
-        data = TrackCSVReader(str(data_path) + "/raw_albums_excerpt.csv", str(data_path) + "/raw_tracks_excerpt.csv")
-        data.read_csv_files()
+        data = TrackCSVReader()
+        data.read_csv_files(data_path, repo.repo_instance, False)
 
         # Create the MemoryRepository implementation for a memory-based repository.
         repo.repo_instance = MemoryRepository(data)
