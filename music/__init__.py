@@ -10,8 +10,8 @@ from sqlalchemy.orm import sessionmaker, clear_mappers
 from sqlalchemy.pool import NullPool
 
 import music.adapters.repository as repo
-from music.adapters.csvdatareader import TrackCSVReader
-from music.adapters.memory_repository import MemoryRepository
+from music.adapters.orm import metadata, map_model_to_tables
+from music.adapters import memory_repository, database_repository, repository_populate
 from music.domainmodel.track import Review
 from music.tracks import services as tracks_services
 
