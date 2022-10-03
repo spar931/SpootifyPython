@@ -2,10 +2,13 @@ import os
 import csv
 import ast
 
+from pathlib import Path
+
 from music.domainmodel.artist import Artist
 from music.domainmodel.album import Album
 from music.domainmodel.track import Track, Review, User
 from music.domainmodel.genre import Genre
+from music.adapters.repository import AbstractRepository
 
 
 def create_track_object(track_row):
@@ -95,9 +98,9 @@ class TrackCSVReader:
     def dataset_of_genres(self) -> set:
         return self.__dataset_of_genres
 
-    def read_albums_file_as_dict(self) -> dict:
-        if not os.path.exists(self.__albums_csv_file):
-            print(f"path {self.__albums_csv_file} does not exist!")
+    def read_albums_file_as_dict(self, data_path: Path) -> dict:
+        if not os.path.exists(str(data_path / "raw_albums_excerpt.csv")):
+            print(str(data_path / "raw_albums_excerpt.csv") + " does not exist!")
 
         album_dict = dict()
         # encoding of unicode_escape is required to decode successfully
@@ -115,9 +118,9 @@ class TrackCSVReader:
 
         return album_dict
 
-    def read_tracks_file(self):
-        if not os.path.exists(self.__tracks_csv_file):
-            print(f"path {self.__tracks_csv_file} does not exist!")
+    def read_tracks_file(self, data_path: Path):
+        if not os.path.exists(str(data_path / "raw_tracks_excerpt.csv")):
+            print(str(data_path / "raw_tracks_excerpt.csv") + " does not exist!")
             return
         track_rows = []
         # encoding of unicode_escape is required to decode successfully
@@ -127,11 +130,11 @@ class TrackCSVReader:
                 track_rows.append(track_row)
         return track_rows
 
-    def read_csv_files(self):
+    def read_csv_files(self, data_path: Path, repo: AbstractRepository, database_mode: bool):
         # key is album_id
-        albums_dict: dict = self.read_albums_file_as_dict()
+        albums_dict: dict = self.read_albums_file_as_dict(data_path)
         # list of track csv rows, not track objects
-        track_rows: list = self.read_tracks_file()
+        track_rows: list = self.read_tracks_file(data_path)
 
         # Make sure re-initialize to empty list, so that calling this function multiple times does not create
         # duplicated dataset.
@@ -152,18 +155,25 @@ class TrackCSVReader:
             album = albums_dict[album_id] if album_id in albums_dict else None
             track.album = album
 
-            # Populate datasets for Artist and Genre
-            if artist not in self.__dataset_of_artists:
-                self.__dataset_of_artists.add(artist)
+            if not database_mode:
+                # Populate datasets for Artist and Genre
+                if artist not in self.__dataset_of_artists:
+                    self.__dataset_of_artists.add(artist)
 
-            if album is not None and album not in self.__dataset_of_albums:
-                self.__dataset_of_albums.add(album)
+                if album is not None and album not in self.__dataset_of_albums:
+                    self.__dataset_of_albums.add(album)
 
-            for genre in track_genres:
-                if genre not in self.__dataset_of_genres:
-                    self.__dataset_of_genres.add(genre)
+                for genre in track_genres:
+                    if genre not in self.__dataset_of_genres:
+                        self.__dataset_of_genres.add(genre)
 
-            self.__dataset_of_tracks.append(track)
+                self.__dataset_of_tracks.append(track)
+            else:
+                repo.add_album(album)
+                repo.add_artist(artist)
+                for genre in track_genres:
+                    repo.add_genre(genre)
+                repo.add_track(track)
 
         return self.__dataset_of_tracks
 

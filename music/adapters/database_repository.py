@@ -84,6 +84,21 @@ class SqlAlchemyRepository(AbstractRepository):
             scm.session.add(track)
             scm.commit()
 
+    def add_artist(self, artist: Artist):
+        with self._session_cm as scm:
+            scm.session.add(artist)
+            scm.commit()
+
+    def add_album(self, album: Album):
+        with self._session_cm as scm:
+            scm.session.add(album)
+            scm.commit()
+
+    def add_genre(self, genre: Genre):
+        with self._session_cm as scm:
+            scm.session.add(genre)
+            scm.commit()
+
     def get_number_of_tracks(self) -> int:
         return self._session_cm.session.query(Track).count()
 

@@ -60,6 +60,21 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def add_artist(self, artist: Artist):
+        """ Adds an artist to the repository. """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_album(self, album: Album):
+        """ Adds an album to the repository. """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_genre(self, genre: Genre):
+        """ Adds a genre to the repository. """
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def get_number_of_tracks(self) -> int:
         """ Returns the number of Tracks in the repository. """
         raise NotImplementedError

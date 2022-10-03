@@ -1,10 +1,9 @@
-
-from music.domainmodel.track import Track, Review, User
-
-
 from music.adapters.repository import AbstractRepository
 from music.adapters.csvdatareader import TrackCSVReader
-from music.domainmodel.track import Review
+from music.domainmodel.artist import Artist
+from music.domainmodel.album import Album
+from music.domainmodel.track import Track, Review, User
+from music.domainmodel.genre import Genre
 
 
 class MemoryRepository(AbstractRepository):
@@ -31,6 +30,15 @@ class MemoryRepository(AbstractRepository):
 
     def add_track(self, track: Track):
         self.__data.dataset_of_tracks.append(track)
+
+    def add_artist(self, artist: Artist):
+        self.__data.dataset_of_artists.add(artist)
+
+    def add_album(self, album: Album):
+        self.__data.dataset_of_albums.add(album)
+
+    def add_genre(self, genre: Genre):
+        self.__data.dataset_of_genres.add(genre)
 
     def get_number_of_tracks(self) -> int:
         return len(self.__data.dataset_of_tracks)
