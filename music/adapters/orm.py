@@ -22,7 +22,7 @@ users_table = Table(
 reviews_table = Table(
     'reviews', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('track_id', ForeignKey('tracks.id')),
+    Column('track_id', ForeignKey('tracks.track_id')),
     Column('review_text', String(1024), nullable=False),
     Column('rating', Integer, nullable=True),
     Column('timestamp', DateTime, nullable=False)
@@ -30,36 +30,36 @@ reviews_table = Table(
 
 tracks_table = Table(
     'tracks', metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('duration', Integer, nullable=False),
+    Column('track_id', Integer, primary_key=True),
+    Column('track_duration', Integer, nullable=False),
     Column('title', String(255), nullable=False),
-    Column('artist_id', ForeignKey('artists.id')),
-    Column('album_id', ForeignKey('albums.id')),
-    # Column('reviews_id', ForeignKey('reviews.id')),
-    # Column('genres_id', ForeignKey('genres.id')),
-    Column('url', String(255), nullable=False)
+    Column('artist_id', ForeignKey('artists.artist_id')),
+    Column('album_id', ForeignKey('albums.album_id')),
+    Column('genres_id', ForeignKey('genres.genre_id')),
+    Column('track_url', String(255), nullable=False)
 )
 
 artists_table = Table(
     'artists', metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('artist_id', Integer, primary_key=True),
     Column('full_name', String(64), nullable=False)
 )
 
 albums_table = Table(
     'albums', metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('album_id', Integer, primary_key=True),
     Column('title', String(255), nullable=False),
-    Column('url', String(255), nullable=False),
-    Column('type', String(255), nullable=False)
-    Column('release_year', Integer, nullable=False)
+    Column('album_url', String(1024), nullable=False),
+    Column('album_type', String(255), nullable=False),
+    Column('release_year', Integer, nullable=True)
 )
 
 genres_table = Table(
     'genres', metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('genre_id', Integer, primary_key=True),
     Column('name', String(255), nullable=False)
 )
+
 
 def map_model_to_tables():
     mapper(User, users_table, properties={
@@ -67,31 +67,34 @@ def map_model_to_tables():
         '_User__password': users_table.c.password
     })
     mapper(Review, reviews_table, properties={
-        '_Review__review_text': reviews_table.c.review,
+        '_Review__review_text': reviews_table.c.review_text,
         '_Review__track_id': reviews_table.c.track_id,
         '_Review__rating': reviews_table.c.rating,
-        '_Comment__timestamp': reviews_table.c.timestamp
+        '_Review__timestamp': reviews_table.c.timestamp
     })
     mapper(Track, tracks_table, properties={
-        '_Track__id': tracks_table.c.id,
-        '_Track__duration': tracks_table.c.duration,
+        '_Track__track_id': tracks_table.c.track_id,
+        '_Track__track_duration': tracks_table.c.track_duration,
         '_Track__title': tracks_table.c.title,
-        '_Track__artist_id': tracks_table.c.artist_id,
-        '_Track__album_id': tracks_table.c.album_id,
-        '_Track__url': tracks_table.c.url,
-        '_Track__reviews': relationship(Review, backref='_Review__track'),
-        '_Track__genres': relationship(Genre, backref='_Genre__track')
+        '_Track__track_url': tracks_table.c.track_url,
+        '_Track__reviews': relationship(Review, backref='_Review__track')
     })
     mapper(Artist, artists_table, properties={
-        '_Artist__full_name': artists_table.c.full_name
+        '_Artist__artist_id': artists_table.c.artist_id,
+        '_Artist__full_name': artists_table.c.full_name,
+        '_Artist__tracks': relationship(Track, backref='_Track__artist')
     })
     mapper(Album, albums_table, properties={
+        '_Album__album_id': albums_table.c.album_id,
         '_Album__title': albums_table.c.title,
-        '_Album__url': albums_table.c.url,
-        '_Album__type': albums_table.c.type,
-        '_Album__release_year': albums_table.c.release_year
+        '_Album__album_url': albums_table.c.album_url,
+        '_Album__album_type': albums_table.c.album_type,
+        '_Album__release_year': albums_table.c.release_year,
+        '_Album__tracks': relationship(Track, backref='_Track__album')
     })
     mapper(Genre, genres_table, properties={
-        '_Genre__name': genres_table.c.name
+        '_Genre__genre_id': genres_table.c.genre_id,
+        '_Genre__name': genres_table.c.name,
+        '_Genre__track': relationship(Track, backref='_Track__genre')
     })
 

@@ -147,6 +147,7 @@ class TrackCSVReader:
 
             # Extract track_genres attributes and assign genres to the track.
             track_genres = extract_genres(track_row)
+
             for genre in track_genres:
                 track.add_genre(genre)
 
@@ -156,25 +157,22 @@ class TrackCSVReader:
             album = albums_dict[album_id] if album_id in albums_dict else None
             track.album = album
 
-            if not database_mode:
-                # Populate datasets for Artist and Genre
-                if artist not in self.__dataset_of_artists:
-                    self.__dataset_of_artists.add(artist)
-
-                if album is not None and album not in self.__dataset_of_albums:
-                    self.__dataset_of_albums.add(album)
-
-                for genre in track_genres:
-                    if genre not in self.__dataset_of_genres:
-                        self.__dataset_of_genres.add(genre)
-
-                self.__dataset_of_tracks.append(track)
-            else:
-                repo.add_album(album)
+            # Populate datasets for Artist and Genre
+            if artist not in self.__dataset_of_artists:
                 repo.add_artist(artist)
-                for genre in track_genres:
+                self.__dataset_of_artists.add(artist)
+
+            if album is not None and album not in self.__dataset_of_albums:
+                repo.add_album(album)
+                self.__dataset_of_albums.add(album)
+
+            for genre in track_genres:
+                if genre not in self.__dataset_of_genres:
                     repo.add_genre(genre)
-                repo.add_track(track)
+                    self.__dataset_of_genres.add(genre)
+
+            repo.add_track(track)
+            self.__dataset_of_tracks.append(track)
 
         return self.__dataset_of_tracks
 

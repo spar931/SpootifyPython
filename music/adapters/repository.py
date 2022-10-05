@@ -1,6 +1,9 @@
 import abc
 
 from music.domainmodel.track import Track, Review, User
+from music.domainmodel.album import Album
+from music.domainmodel.artist import Artist
+from music.domainmodel.genre import Genre
 
 
 repo_instance = None
