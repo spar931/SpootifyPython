@@ -112,15 +112,30 @@ class SqlAlchemyRepository(AbstractRepository):
         return self._session_cm.session.query(Genre).count()
 
     def get_track_by_id(self, track_id):
-        track = self._session_cm.session.query(Track).filter(Track.track_id == track_id)
+        track = None
+        try:
+            track = self._session_cm.session.query(Track).filter(Track._Track__track_id == track_id).one()
+        except NoResultFound:
+            # Ignore any exception and return None.
+            pass
         return track
 
     def get_artist_by_id(self, artist_id):
-        artist = self._session_cm.session.query(Artist).filter(Artist.artist_id == artist_id)
+        artist = None
+        try:
+            artist = self._session_cm.session.query(Artist).filter(Artist._Artist__artist_id == artist_id).one()
+        except NoResultFound:
+            # Ignore any exception and return None.
+            pass
         return artist
 
     def get_album_by_id(self, album_id):
-        album = self._session_cm.session.query(Album).filter(Album.album_id == album_id)
+        album = None
+        try:
+            album = self._session_cm.session.query(Album).filter(Album._Album__album_id == album_id).one()
+        except NoResultFound:
+            # Ignore any exception and return None.
+            pass
         return album
 
     def add_review(self, review: Review):
