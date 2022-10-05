@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from flask import session
+
 from music.domainmodel.artist import Artist
 from music.domainmodel.genre import Genre
 from music.domainmodel.album import Album
@@ -131,6 +133,11 @@ class Review:
             raise ValueError('Invalid value for the rating.')
 
         self.__timestamp = datetime.now()
+        self.__reviewer = session['user_name']
+
+    @property
+    def reviewer(self) -> str:
+        return self.__reviewer
 
     @property
     def track(self) -> Track:

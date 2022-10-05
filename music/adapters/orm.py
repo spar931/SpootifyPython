@@ -23,9 +23,11 @@ reviews_table = Table(
     'reviews', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('track_id', ForeignKey('tracks.track_id')),
+    Column('user_id', ForeignKey('users.user_id')),
     Column('review_text', String(1024), nullable=False),
     Column('rating', Integer, nullable=True),
-    Column('timestamp', DateTime, nullable=False)
+    Column('timestamp', DateTime, nullable=False),
+    Column('reviewer', String(1024), nullable=False)
 )
 
 tracks_table = Table(
@@ -65,13 +67,15 @@ def map_model_to_tables():
     mapper(User, users_table, properties={
         '_User__user_id': users_table.c.user_id,
         '_User__user_name': users_table.c.user_name,
-        '_User__password': users_table.c.password
+        '_User__password': users_table.c.password,
+        '_User__reviews': relationship(Review, backref='_Review__user')
     })
     mapper(Review, reviews_table, properties={
         '_Review__review_text': reviews_table.c.review_text,
         '_Review__track_id': reviews_table.c.track_id,
         '_Review__rating': reviews_table.c.rating,
-        '_Review__timestamp': reviews_table.c.timestamp
+        '_Review__timestamp': reviews_table.c.timestamp,
+        '_Review__reviewer': reviews_table.c.reviewer
     })
     mapper(Track, tracks_table, properties={
         '_Track__track_id': tracks_table.c.track_id,
