@@ -14,7 +14,7 @@ from music.adapters.csvdatareader import TrackCSVReader
 from music.adapters.memory_repository import MemoryRepository
 from music.adapters.orm import metadata, map_model_to_tables
 from music.adapters import memory_repository, database_repository, repository_populate, csvdatareader
-from music.domainmodel.track import Review
+from music.domainmodel.track import Review, User
 from music.tracks import services as tracks_services
 
 
