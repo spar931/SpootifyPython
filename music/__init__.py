@@ -49,7 +49,7 @@ def create_app(test_config=None):
         track_id = 3
         track = tracks_services.get_track_by_id(repo.repo_instance, track_id)
         review_text = 'my favourite track'
-        track.track_reviews.append(Review(track, review_text, 4))
+        track.reviews.append(Review(track, review_text, 4))
 
         database_mode = False
 

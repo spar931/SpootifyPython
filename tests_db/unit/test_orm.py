@@ -178,7 +178,7 @@ def test_loading_of_reviewed_track(empty_session):
     rows = empty_session.query(Track).all()
     track = rows[0]
 
-    for review in track.track_reviews:
+    for review in track.reviews:
         assert review.article is track
 
 

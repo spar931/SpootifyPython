@@ -59,5 +59,5 @@ def get_reviews_for_track(track_id, repo: AbstractRepository):
     if track is None:
         raise NonExistentTrackException
 
-    return track.track_reviews
+    return track.reviews
 

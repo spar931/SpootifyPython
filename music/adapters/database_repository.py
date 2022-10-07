@@ -64,7 +64,7 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_user(self, user_name) -> User:
         user = None
         try:
-            user = self._session_cm.session.query(User).filter(User._User__user_name == user_name).one()
+            user = self._session_cm.session.query(User).filter(User._User__user_name == user_name.lower()).one()
         except NoResultFound:
             # Ignore any exception and return None.
             pass
@@ -145,7 +145,7 @@ class SqlAlchemyRepository(AbstractRepository):
             scm.commit()
 
     def get_reviews(self):
-        return self._session_cm.session.query(Review)
+        return self._session_cm.session.query(Review).all()
 
     def get_number_of_users(self):
         return self._session_cm.session.query(User).count()

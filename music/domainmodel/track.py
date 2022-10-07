@@ -28,7 +28,7 @@ class Track:
         self.__reviews: list[Review] = []
 
     @property
-    def track_reviews(self) -> list:
+    def reviews(self) -> list:
         return self.__reviews
 
     @property
@@ -268,7 +268,7 @@ def make_comment(review_text: str, user: User, track: Track, rating: int):
 
     review.reviewer = user.user_name
     user.add_review(review)
-    track.track_reviews.append(review)
+    track.reviews.append(review)
 
     return review
 

@@ -7,7 +7,7 @@ def test_database_populate_inspect_table_names(database_engine):
 
     # Get table information
     inspector = inspect(database_engine)
-    assert inspector.get_table_names() == ['albums', 'article_genres', 'artists', 'genres', 'reviews', 'tracks', 'users']
+    assert inspector.get_table_names() == ['albums', 'artists', 'genres', 'reviews', 'track_genres', 'tracks', 'users']
 
 
 def test_database_populate_select_all_users(database_engine):
@@ -92,7 +92,7 @@ def test_database_populate_select_all_artists(database_engine):
 
     # Get table information
     inspector = inspect(database_engine)
-    name_of_artists_table = inspector.get_table_names()[2]
+    name_of_artists_table = inspector.get_table_names()[1]
 
     with database_engine.connect() as connection:
         # query for records in table artists
@@ -113,7 +113,7 @@ def test_database_populate_select_all_genres(database_engine):
 
     # Get table information
     inspector = inspect(database_engine)
-    name_of_genres_table = inspector.get_table_names()[3]
+    name_of_genres_table = inspector.get_table_names()[2]
 
     with database_engine.connect() as connection:
         # query for records in table genres
