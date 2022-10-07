@@ -62,11 +62,18 @@ genres_table = Table(
 )
 
 track_genres_table = Table(
-    'article_genres', metadata,
+    'track_genres', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('genre_id', Integer, ForeignKey('genres.genre_id')),
     Column('track_id', Integer, ForeignKey('tracks.track_id'))
 )
+
+# track_reviews_table = Table(
+#     'track_reviews', metadata,
+#     Column('id', Integer, primary_key=True, autoincrement=True),
+#     Column('review_id', Integer, ForeignKey('reviews.id')),
+#     Column('track_id', Integer, ForeignKey('tracks.track_id'))
+# )
 
 
 def map_model_to_tables():
@@ -81,7 +88,8 @@ def map_model_to_tables():
         '_Review__track_id': reviews_table.c.track_id,
         '_Review__rating': reviews_table.c.rating,
         '_Review__timestamp': reviews_table.c.timestamp,
-        '_Review__reviewer': reviews_table.c.reviewer
+        '_Review__reviewer': reviews_table.c.reviewer,
+        # '_Review__tracks': relationship(Track, secondary=track_reviews_table, back_populates='_Track__reviews')
     })
     mapper(Track, tracks_table, properties={
         '_Track__track_id': tracks_table.c.track_id,
@@ -89,7 +97,8 @@ def map_model_to_tables():
         '_Track__title': tracks_table.c.title,
         '_Track__track_url': tracks_table.c.track_url,
         '_Track__reviews': relationship(Review, backref='_Review__track'),
-        '_Track__genres': relationship(Genre, secondary=track_genres_table, back_populates='_Genre__tracks')
+        '_Track__genres': relationship(Genre, secondary=track_genres_table, back_populates='_Genre__tracks'),
+        # '_Track__reviews': relationship(Review, secondary=track_reviews_table, back_populates='_Review__tracks')
     })
     mapper(Artist, artists_table, properties={
         '_Artist__artist_id': artists_table.c.artist_id,

@@ -133,11 +133,18 @@ class Review:
             raise ValueError('Invalid value for the rating.')
 
         self.__timestamp = datetime.now()
-        self.__reviewer = session['user_name']
+        self.__reviewer = None
 
     @property
     def reviewer(self) -> str:
         return self.__reviewer
+
+    @reviewer.setter
+    def reviewer(self, reviewer: str):
+        if isinstance(reviewer, str):
+            self.__reviewer = reviewer.strip()
+        else:
+            self.__reviewer = None
 
     @property
     def track(self) -> Track:
@@ -259,6 +266,7 @@ class User:
 def make_comment(review_text: str, user: User, track: Track, rating: int):
     review = Review(track, review_text, rating)
 
+    review.reviewer = user.user_name
     user.add_review(review)
     track.track_reviews.append(review)
 

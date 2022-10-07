@@ -47,7 +47,7 @@ def add_review(track_id: int, rating: int, review_text: str, user_name: str, rep
         raise UnknownUserException
 
     # Create review.
-    review = make_comment(review_text, user, track, 1)
+    review = make_comment(review_text, user, track, rating)
 
     # Update the repository.
     repo.add_review(review)

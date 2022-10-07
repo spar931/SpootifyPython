@@ -28,11 +28,11 @@ def test_database_populate_select_all_users(database_engine):
         assert all_users == ['laptop', 'notebook']
 
 
-def test_database_populate_select_all_reviews(database_engine): #still need to do this
+def test_database_populate_select_all_reviews(database_engine):
 
     # Get table information
     inspector = inspect(database_engine)
-    name_of_reviews_table = inspector.get_table_names()[4]
+    name_of_reviews_table = inspector.get_table_names()[3]
 
     with database_engine.connect() as connection:
         # query for records in table comments

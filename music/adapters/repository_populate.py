@@ -15,6 +15,8 @@ def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
     auth_services.add_user('laptop', 'Mercury00', repo)
     auth_services.add_user('notebook', 'Mercury00', repo)
 
+    track_services.add_review(3, 5, 'my favourite track', 'laptop', repo)
+    track_services.add_review(5, 1, 'i hate this track', 'notebook', repo)
     # track = Track(0, 'test_track')
     # review_text = 'my favourite track'
     # track.track_reviews.append(Review(track, review_text, 4))
