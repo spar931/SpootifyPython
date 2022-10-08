@@ -146,7 +146,7 @@ class SqlAlchemyRepository(AbstractRepository):
     def add_review(self, review: Review):
         super().add_review(review)
         with self._session_cm as scm:
-            scm.session.add(review)
+            scm.session.merge(review)
             scm.commit()
 
     def get_reviews(self):
