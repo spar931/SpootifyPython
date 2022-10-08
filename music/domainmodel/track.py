@@ -27,6 +27,16 @@ class Track:
         self.__genres: list = []
         self.__reviews: list[Review] = []
 
+    def add_review(self, new_review: Review):
+        if not isinstance(new_review, Review) or new_review in self.__reviews:
+            return
+        self.__reviews.append(new_review)
+
+    def remove_review(self, review: Review):
+        if not isinstance(review, Review) or review not in self.__reviews:
+            return
+        self.__reviews.remove(review)
+
     @property
     def reviews(self) -> list:
         return self.__reviews
@@ -268,7 +278,7 @@ def make_comment(review_text: str, user: User, track: Track, rating: int):
 
     review.reviewer = user.user_name
     user.add_review(review)
-    track.reviews.append(review)
+    track.add_review(review)
 
     return review
 

@@ -33,7 +33,7 @@
             </form>
         </div>
         <div style="clear:both">
-            {% for review in track.comments %}
+            {% for review in track.reviews %}
                 <p>{{review.review_text}}, by {{user_name}}, {{review.timestamp}}</p>
             {% endfor %}
         </div>

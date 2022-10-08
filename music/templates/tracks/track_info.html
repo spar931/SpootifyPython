@@ -11,8 +11,8 @@
 
 
     <div style="float:right">
-        {% if track.track_reviews|length > 0 %}
-            <button class="btn-general" onclick="location.href='{{ view_comment_url }}'">{{ track.track_reviews|length }} Reviews</button>
+        {% if track.reviews|length > 0 %}
+            <button class="btn-general" onclick="location.href='{{ view_comment_url }}'">{{ track.reviews|length }} Reviews</button>
         {% endif %}
         <button class="btn-general" onclick="location.href='{{ add_comment_url }}'">Review</button>
     </div>
