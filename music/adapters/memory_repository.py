@@ -76,6 +76,14 @@ class MemoryRepository(AbstractRepository):
                 return chosen_album
         return chosen_album
 
+    def get_genre_by_id(self, genre_id):
+        chosen_genre = None
+        for genre in self.__data.dataset_of_genres:
+            if int(genre_id) == genre.genre_id:
+                chosen_genre = genre
+                return chosen_genre
+        return chosen_genre
+
     def add_review(self, review: Review):
         # call parent class first, add_review relies on implementation of code common to all derived classes
         super().add_review(review)

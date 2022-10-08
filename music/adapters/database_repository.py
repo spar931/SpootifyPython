@@ -1,7 +1,3 @@
-from datetime import date
-from typing import List
-
-from sqlalchemy import desc, asc
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 
 from sqlalchemy.orm import scoped_session
@@ -137,6 +133,15 @@ class SqlAlchemyRepository(AbstractRepository):
             # Ignore any exception and return None.
             pass
         return album
+
+    def get_genre_by_id(self, genre_id):
+        genre = None
+        try:
+            genre = self._session_cm.session.query(Genre).filter(Genre._Genre__genre_id == genre_id).one()
+        except NoResultFound:
+            # Ignore any exception and return None.
+            pass
+        return genre
 
     def add_review(self, review: Review):
         super().add_review(review)

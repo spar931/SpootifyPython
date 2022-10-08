@@ -58,6 +58,11 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def get_genre_by_id(self, genre_id):
+        """ Gets specific genre based on genre_id """
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def add_track(self, track: Track):
         """ Adds a Track to the repository. """
         raise NotImplementedError
@@ -91,6 +96,8 @@ class AbstractRepository(abc.ABC):
         """
         if review.track is None:
             raise RepositoryException('review not correctly attached to a track')
+        if review.reviewer is None:
+            raise RepositoryException('review not correctly attached to a User')
 
     @abc.abstractmethod
     def get_reviews(self):

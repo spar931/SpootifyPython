@@ -1,6 +1,7 @@
 from datetime import date, datetime
 
 import pytest
+import sqlalchemy.exc
 
 import music.adapters.repository as repo
 from music.adapters.database_repository import SqlAlchemyRepository
@@ -9,9 +10,6 @@ from music.domainmodel.album import Album
 from music.domainmodel.artist import Artist
 from music.domainmodel.genre import Genre
 from music.adapters.repository import RepositoryException
-
-
-# need to check if duplicate track_ids and for all other entities can be added, i believe i have not accounted for this yet
 
 
 def test_repository_can_add_a_user(session_factory):
@@ -92,7 +90,131 @@ def test_repository_does_not_retrieve_a_non_existent_track(session_factory):
     assert track is None
 
 
-## artist, genre, album tests here
+def test_repository_can_retrieve_artist_count(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    number_of_artists = repo.get_number_of_artists()
+
+    # Check that the query returned 263 artists.
+    assert number_of_artists == 263
+
+
+def test_repository_can_add_artist(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    number_of_artists = repo.get_number_of_artists()
+
+    new_artist_id = number_of_artists * 3
+
+    artist = Artist(
+            new_artist_id,
+            'new_artist'
+    )
+
+    repo.add_artist(artist)
+
+    assert repo.get_artist_by_id(new_artist_id) == artist
+
+
+def test_repository_can_retrieve_artist(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    artist = repo.get_artist_by_id(1)
+
+    # Check that the artist has the expected full name.
+    assert artist.full_name == 'AWOL'
+
+
+def test_repository_does_not_retrieve_a_non_existent_artist(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    artist = repo.get_artist_by_id(0)
+    assert artist is None
+
+
+def test_repository_can_retrieve_album_count(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    number_of_albums = repo.get_number_of_albums()
+
+    # Check that the query returned 427 albums.
+    assert number_of_albums == 427
+
+
+def test_repository_can_add_album(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    number_of_albums = repo.get_number_of_albums()
+
+    new_album_id = number_of_albums * 3
+
+    album = Album(
+            new_album_id,
+            'new_album'
+    )
+    album.album_url = 'www.album.com'
+    album.album_type = 'hip hop'
+    album.release_year = 3001
+    repo.add_album(album)
+
+    assert repo.get_album_by_id(new_album_id) == album
+
+
+def test_repository_can_retrieve_album(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    album = repo.get_album_by_id(1)
+
+    # Check that the album has the expected title.
+    assert album.title == 'AWOL - A Way Of Life'
+
+
+def test_repository_does_not_retrieve_a_non_existent_album(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    album = repo.get_album_by_id(0)
+    assert album is None
+
+
+def test_repository_can_retrieve_genre_count(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    number_of_genres = repo.get_number_of_genres()
+
+    # Check that the query returned 60 genres.
+    assert number_of_genres == 60
+
+
+def test_repository_can_add_genre(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    number_of_genres = repo.get_number_of_genres()
+
+    new_genre_id = number_of_genres * 3
+
+    genre = Genre(
+            new_genre_id,
+            'new_genre'
+    )
+    repo.add_genre(genre)
+
+    assert repo.get_genre_by_id(new_genre_id) == genre
+
+
+def test_repository_can_retrieve_genre(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    genre = repo.get_genre_by_id(1)
+
+    # Check that the genre has the expected name.
+    assert genre.name == 'Avant-Garde'
+
+
+def test_repository_does_not_retrieve_a_non_existent_genre(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    album = repo.get_album_by_id(0)
+    assert album is None
 
 
 def test_repository_can_add_a_review(session_factory):
@@ -107,14 +229,14 @@ def test_repository_can_add_a_review(session_factory):
     assert review in repo.get_reviews()
 
 
-# def test_repository_does_not_add_a_review_without_a_user(session_factory):
-#    repo = SqlAlchemyRepository(session_factory)
-#
-#    track = repo.get_track_by_id(2)
-#    review = Review(track, "addicting track!", 5)
-#
-#    with pytest.raises(RepositoryException):
-#        repo.add_review(review)
+def test_repository_does_not_add_a_review_without_a_user(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    track = repo.get_track_by_id(2)
+    review = Review(track, "addicting track!", 5)
+
+    with pytest.raises(RepositoryException):
+        repo.add_review(review)
 
 
 def test_repository_can_retrieve_comments(session_factory):
